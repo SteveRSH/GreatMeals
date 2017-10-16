@@ -41,19 +41,19 @@ public class YelpAPIController {
     public List<LocalBusiness> getBusinesses() {
         List<LocalBusiness> businesses = new ArrayList<>();
 
-        LocalBusiness lb = new LocalBusiness("Papa John's", "Pizza", "Charlotte");
+        LocalBusiness lb = new LocalBusiness("Papa John's", "Pizza", "Charlotte", 23.74, 19);
         businesses.add(lb);
 
-        lb = new LocalBusiness("Whole Foods", "Varies", "Charleston");
+        lb = new LocalBusiness("Whole Foods", "Varies", "Charleston", -74.00, 32);
         businesses.add(lb);
 
-        lb = new LocalBusiness("McDonalds", "Burgers", "Myers Park");
+        lb = new LocalBusiness("McDonalds", "Burgers", "Myers Park", 55, 103);
         businesses.add(lb);
 
-        lb = new LocalBusiness("Burbon Street", "Fish and Chips", "Fort Mills");
+        lb = new LocalBusiness("Burbon Street", "Fish and Chips", "Fort Mills", 32, 27);
         businesses.add(lb);
 
-        lb = new LocalBusiness("Sushi House", "Sushi", "Plaze Midwood");
+        lb = new LocalBusiness("Sushi House", "Sushi", "Plaze Midwood", 15, 25);
         businesses.add(lb);
 
 
