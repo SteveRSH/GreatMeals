@@ -6,7 +6,7 @@ public class Response {
     public List<Business> restaurantBusiness;
     public int total;
 
-    public List<Business> getRestuarantBusiness() {
+    public List<Business> getRestaurantBusiness() {
         return restaurantBusiness;
     }
 
