@@ -1,11 +1,10 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
-import com.theironyard.charlotte.GreatMeals.models.LocalBusiness;
-import com.theironyard.charlotte.GreatMeals.models.Response;
+import com.theironyard.charlotte.GreatMeals.models.yelp.LocalBusiness;
+import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

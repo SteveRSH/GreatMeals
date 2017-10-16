@@ -1,4 +1,4 @@
-package com.theironyard.charlotte.GreatMeals.models;
+package com.theironyard.charlotte.GreatMeals.models.yelp;
 
 
 //format used was mirrored the way yelp API has it listed

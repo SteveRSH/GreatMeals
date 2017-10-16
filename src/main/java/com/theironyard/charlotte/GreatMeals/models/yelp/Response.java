@@ -1,4 +1,4 @@
-package com.theironyard.charlotte.GreatMeals.models;
+package com.theironyard.charlotte.GreatMeals.models.yelp;
 
 import java.util.List;
 
