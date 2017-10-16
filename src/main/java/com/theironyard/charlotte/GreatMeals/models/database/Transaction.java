@@ -17,7 +17,7 @@ public class Transaction {
     Restaurant restaurant;
 
     @Column(nullable = false)
-    private String total;
+    private double total;
 
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date created_at;
@@ -46,11 +46,11 @@ public class Transaction {
         this.restaurant = restaurant;
     }
 
-    public String getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
