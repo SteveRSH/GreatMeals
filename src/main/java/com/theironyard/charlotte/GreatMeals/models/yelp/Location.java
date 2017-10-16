@@ -1,4 +1,4 @@
-package com.theironyard.charlotte.GreatMeals.models;
+package com.theironyard.charlotte.GreatMeals.models.yelp;
 
 public class Location {
     public String address1;

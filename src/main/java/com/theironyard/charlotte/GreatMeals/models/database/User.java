@@ -1,6 +1,6 @@
-package com.theironyard.charlotte.GreatMeals.models;
+package com.theironyard.charlotte.GreatMeals.models.database;
 
-import org.springframework.cglib.core.Local;
+import com.theironyard.charlotte.GreatMeals.models.yelp.LocalBusiness;
 
 import javax.persistence.*;
 
