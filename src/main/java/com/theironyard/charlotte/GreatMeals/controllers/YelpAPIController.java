@@ -1,14 +1,12 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
+import com.theironyard.charlotte.GreatMeals.models.yelp.Business;
 import com.theironyard.charlotte.GreatMeals.models.yelp.LocalBusiness;
 import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -20,11 +18,11 @@ public class YelpAPIController {
 
     // /search
     @CrossOrigin
-    @GetMapping(path = "/search") //temp path to just make it work
-    public Response searchTest(@RequestParam(value = "query") String query){
-            RestTemplate template = new RestTemplate();
+    @GetMapping(path = "/search/{query}") //temp path to just make it work
+    public Response searchTest(@PathVariable(value = "query") String query) {
+        RestTemplate template = new RestTemplate();
         String url =
-                String.format("https://api.yelp.com/v3/businesses/search?term=%s&latitude=37.786882&longitude=-122.399972", query);
+                "https://api.yelp.com/v3/businesses/search?term=" + query + "&latitude=37.786882&longitude=-122.399972";
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, AUTHTOKEN);
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -33,6 +31,49 @@ public class YelpAPIController {
         return restaurantList;
 
     }
+
+//https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html
+//https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpHeaders.html
+
+    @GetMapping("/restaurantsmeals")
+    public Response resTaurants() {
+        RestTemplate restaurantTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + AUTHTOKEN);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        Response response = restaurantTemplate
+                .exchange("https://api.yelp.com/v3/businesses/search?term=food+restaurants&latitude=35.2266289&longitude=-80.84217129999999",
+                        HttpMethod.GET,
+                        entity,
+                        Response.class)
+                .getBody();
+
+        return response;
+
+    }
+
+    @GetMapping("/restaurantsmeals/{id}")
+    public Business restaurantgreatmeals(@PathVariable String id){
+        RestTemplate restaurantTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + AUTHTOKEN);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        Business response = restaurantTemplate
+                .exchange("https://api.yelp.com/v3/businesses/" + id,
+                        HttpMethod.GET,
+                        entity,
+                        Business.class)
+                .getBody();
+
+        return response;
+    }
+}
+
+
+
+
 
 //    @CrossOrigin
 //    @GetMapping("/get-businesses")
@@ -57,5 +98,5 @@ public class YelpAPIController {
 //
 //        return businesses;
 //    }
-}
+//}
 

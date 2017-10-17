@@ -3,15 +3,15 @@ package com.theironyard.charlotte.GreatMeals.models.yelp;
 import java.util.List;
 
 public class Response {
-    public List<Business> restaurantBusiness;
+    public List<Business> businesses;
     public int total;
 
-    public List<Business> getRestaurantBusiness() {
-        return restaurantBusiness;
+    public List<Business> getBusinesses() {
+        return businesses;
     }
 
-    public void setRestaurantBusiness(List<Business> restaurantBusiness) {
-        this.restaurantBusiness = restaurantBusiness;
+    public void setBusinesses(List<Business> businesses) {
+        this.businesses = businesses;
     }
 
     public int getTotal() {
@@ -25,7 +25,7 @@ public class Response {
     @Override
     public String toString() {
         return "Response{" +
-                "restaurantBusiness=" + restaurantBusiness +
+                "businesses=" + businesses +
                 ", total=" + total +
                 '}';
     }

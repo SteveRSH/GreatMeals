@@ -1,5 +1,7 @@
 package com.theironyard.charlotte.GreatMeals.models.yelp;
 
+import java.util.ArrayList;
+
 public class Location {
     public String address1;
     public String address2;
@@ -8,7 +10,7 @@ public class Location {
     public String zip_code;
     public String US;
     public String state;
-    public String display_address;
+    public ArrayList<String> display_address;
 
     public String getAddress1() {
         return address1;
@@ -66,11 +68,11 @@ public class Location {
         this.state = state;
     }
 
-    public String getDisplay_address() {
+    public ArrayList<String> getDisplay_address() {
         return display_address;
     }
 
-    public void setDisplay_address(String display_address) {
+    public void setDisplay_address(ArrayList<String> display_address) {
         this.display_address = display_address;
     }
 
@@ -86,5 +88,8 @@ public class Location {
                 ", state='" + state + '\'' +
                 ", display_address='" + display_address + '\'' +
                 '}';
+    }
+
+    public Location() {
     }
 }
