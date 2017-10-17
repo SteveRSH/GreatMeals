@@ -1,6 +1,6 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
-import com.theironyard.charlotte.GreatMeals.models.yelp.LocalBusiness;
+//import com.theironyard.charlotte.GreatMeals.models.yelp.LocalBusiness;
 import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,28 +35,28 @@ public class YelpAPIController {
 
     }
 
-    @CrossOrigin
-    @GetMapping("/get-businesses")
-    public List<LocalBusiness> getBusinesses() {
-        List<LocalBusiness> businesses = new ArrayList<>();
-
-        LocalBusiness lb = new LocalBusiness("Papa John's", "Pizza", "Charlotte");
-        businesses.add(lb);
-
-        lb = new LocalBusiness("Whole Foods", "Varies", "Charleston");
-        businesses.add(lb);
-
-        lb = new LocalBusiness("McDonalds", "Burgers", "Myers Park");
-        businesses.add(lb);
-
-        lb = new LocalBusiness("Burbon Street", "Fish and Chips", "Fort Mills");
-        businesses.add(lb);
-
-        lb = new LocalBusiness("Sushi House", "Sushi", "Plaze Midwood");
-        businesses.add(lb);
-
-
-        return businesses;
-    }
+//    @CrossOrigin
+//    @GetMapping("/get-businesses")
+//    public List<LocalBusiness> getBusinesses() {
+//        List<LocalBusiness> businesses = new ArrayList<>();
+//
+//        LocalBusiness lb = new LocalBusiness("Papa John's", "Pizza", "Charlotte");
+//        businesses.add(lb);
+//
+//        lb = new LocalBusiness("Whole Foods", "Varies", "Charleston");
+//        businesses.add(lb);
+//
+//        lb = new LocalBusiness("McDonalds", "Burgers", "Myers Park");
+//        businesses.add(lb);
+//
+//        lb = new LocalBusiness("Burbon Street", "Fish and Chips", "Fort Mills");
+//        businesses.add(lb);
+//
+//        lb = new LocalBusiness("Sushi House", "Sushi", "Plaze Midwood");
+//        businesses.add(lb);
+//
+//
+//        return businesses;
+//    }
 }
 

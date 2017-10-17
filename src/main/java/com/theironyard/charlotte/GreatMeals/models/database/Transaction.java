@@ -1,5 +1,7 @@
 package com.theironyard.charlotte.GreatMeals.models.database;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -19,8 +21,11 @@ public class Transaction {
     @Column(nullable = false)
     private double total;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
     private Date created_at;
+
 
     public int getId() {
         return id;

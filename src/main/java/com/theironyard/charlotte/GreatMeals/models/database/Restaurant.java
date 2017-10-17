@@ -1,7 +1,10 @@
 package com.theironyard.charlotte.GreatMeals.models.database;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurants")
@@ -19,11 +22,14 @@ public class Restaurant {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
     private Date created_at;
 
-    @OneToMany
-    Transaction transaction;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Set<Transaction> transaction;
 
     public int getId() {
         return id;
@@ -65,11 +71,11 @@ public class Restaurant {
         this.created_at = created_at;
     }
 
-    public Transaction getTransaction() {
+    public Set<Transaction> getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(Set<Transaction> transaction) {
         this.transaction = transaction;
     }
 }
