@@ -1,9 +1,31 @@
 package com.theironyard.charlotte.GreatMeals.models.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+
+/**
+ * {
+ *     "id": 1,
+ *     "description": "Best shit in town. NO doubt.",
+ *     "price": 4.55,
+ *     "restaurant": {
+ *          "id": 42,
+ *          "yelp_id": "abcdef",
+ *          "username": "Ben",
+ *          "password": "password",
+ *          "transactions": [
+ *              {
+ *                  "id": 350,
+ *
+*               }
+ *
+ *          ]
+ *     }
+ * }
+ */
 
 @Entity
 @Table(name = "transactions")

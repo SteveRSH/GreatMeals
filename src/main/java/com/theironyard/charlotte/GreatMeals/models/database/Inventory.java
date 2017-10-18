@@ -6,6 +6,17 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 
+
+/**
+ * {
+ *     "id": 1,
+ *     "description": "Best shit in town. NO doubt.",
+ *     "price": 4.55,
+ *     "restaurant": {
+ *
+ *     }
+ * }
+ */
 @Entity
 @Table(name = "inventory")
 public class Inventory {

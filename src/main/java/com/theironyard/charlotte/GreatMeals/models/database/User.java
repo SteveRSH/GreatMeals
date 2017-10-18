@@ -26,9 +26,6 @@ public class User {
     @Column(name = "created_at")
     private Date created_at;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    private Set<Transaction> transaction;
-
     public int getId() {
         return id;
     }
@@ -61,11 +58,4 @@ public class User {
         this.created_at = created_at;
     }
 
-    public Set<Transaction> getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(Set<Transaction> transaction) {
-        this.transaction = transaction;
-    }
 }

@@ -1,10 +1,29 @@
 package com.theironyard.charlotte.GreatMeals.models.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+
+
+/**
+ * {
+ *     "id": 1,
+ *     "description": "Best shit in town. NO doubt.",
+ *     "price": 4.55,
+ *     "restaurant": {
+ *          "id": 42,
+ *          "yelp_id": "abcdef",
+ *          "username": "Ben",
+ *          "password": "password",
+ *          "transactions": [
+ *
+ *          ]
+ *     }
+ * }
+ */
 
 @Entity
 @Table(name = "restaurants")
@@ -26,10 +45,6 @@ public class Restaurant {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
     private Date created_at;
-
-
-    @OneToMany(cascade = {CascadeType.ALL})
-    private Set<Transaction> transaction;
 
     public int getId() {
         return id;
@@ -71,11 +86,4 @@ public class Restaurant {
         this.created_at = created_at;
     }
 
-    public Set<Transaction> getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(Set<Transaction> transaction) {
-        this.transaction = transaction;
-    }
 }
