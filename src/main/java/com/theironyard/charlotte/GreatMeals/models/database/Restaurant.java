@@ -36,11 +36,35 @@ public class Restaurant {
     private String yelp_id;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private int rating;
+
+    @Column
+    private String image_url;
+
+    @Column(nullable = false)
+    private String price;
+
+    @Column(nullable = false)
+    private double latitude;
+
+    @Column(nullable = false)
+    private double longitude;
+
+    @Column(nullable = false)
+    private String display_address;
+
+    @Column(nullable = false)
+    private String display_phone;
+
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String password;
-
+    
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
