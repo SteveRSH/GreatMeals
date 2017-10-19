@@ -18,6 +18,7 @@ public class Business {
     public String display_phone;
     public double distance;
 
+
     public Business() {
     }
 
