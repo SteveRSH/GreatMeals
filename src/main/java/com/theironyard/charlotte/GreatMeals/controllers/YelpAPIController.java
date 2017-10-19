@@ -22,7 +22,7 @@ public class YelpAPIController {
     public Response searchTest(@PathVariable(value = "query") String query) {
         RestTemplate template = new RestTemplate();
         String url =
-                "https://api.yelp.com/v3/businesses/search?term=" + query + "&latitude=37.786882&longitude=-122.399972";
+                "https://api.yelp.com/v3/businesses/search?term=" + query + "&latitude=35.227263199999996&longitude=-80.8465059";
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, AUTHTOKEN);
         HttpEntity<String> request = new HttpEntity<>(headers);
@@ -43,7 +43,7 @@ public class YelpAPIController {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         Response response = restaurantTemplate
-                .exchange("https://api.yelp.com/v3/businesses/search?term=food+restaurants&latitude=35.2266289&longitude=-80.84217129999999",
+                .exchange("https://api.yelp.com/v3/businesses/search?term=food+restaurants&latitude=35.227263199999996&longitude=-80.8465059",
                         HttpMethod.GET,
                         entity,
                         Response.class)
