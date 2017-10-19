@@ -157,7 +157,7 @@ public class LastMealGreatDealController {
 
     @CrossOrigin
     @GetMapping("/transactions")
-    public List<Transaction> getAllRestaurantTransactions() {
+    public List<Transaction> getAllTransactions() {
         //TODO: if session owner is a restaurant, find all transactions where
         //TODO: session owners username is in restaurant db
 
@@ -201,27 +201,7 @@ public class LastMealGreatDealController {
 //        //return all restaurants in area
 //    }
 //
-    @CrossOrigin
-    @GetMapping("/transactions")
-    public List<Transaction> getAllCustomerTransactions() {
-        // TODO: if the session owner is customer,
-        // TODO: get all transactions with session owners username
 
-        List<Transaction> allTransactions = (List<Transaction>) transactionRepo.findAll();
-
-        return allTransactions;
-    }
-//
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void sortCustomerTransactions() {
-//        //return all restaurants in area
-//    }
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void searchTransactionsByRestaurant() {
-//        //return all restaurants in area
-//    }
 
     @CrossOrigin
     @GetMapping("/restaurants")
