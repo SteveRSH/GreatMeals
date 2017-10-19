@@ -1,16 +1,14 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
+
 import com.theironyard.charlotte.GreatMeals.models.yelp.Business;
-import com.theironyard.charlotte.GreatMeals.models.yelp.LocalBusiness;
+
 import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class YelpAPIController {
@@ -32,11 +30,11 @@ public class YelpAPIController {
 
     }
 
-//https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html
-//https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpHeaders.html
+    //https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html
+    //https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpHeaders.html
 
     @GetMapping("/restaurantsmeals")
-    public Response resTaurants() {
+    public Response restaurants() {
         RestTemplate restaurantTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + AUTHTOKEN);
@@ -70,33 +68,4 @@ public class YelpAPIController {
         return response;
     }
 }
-
-
-
-
-
-//    @CrossOrigin
-//    @GetMapping("/get-businesses")
-//    public List<LocalBusiness> getBusinesses() {
-//        List<LocalBusiness> businesses = new ArrayList<>();
-//
-//        LocalBusiness lb = new LocalBusiness("Papa John's", "Pizza", "Charlotte", -80.84217129999999, 35.2266289);
-//        businesses.add(lb);
-//
-//        lb = new LocalBusiness("Whole Foods", "Varies", "Charleston", -80.84546999999999, 35.224456);
-//        businesses.add(lb);
-//
-//        lb = new LocalBusiness("McDonalds", "Burgers", "Myers Park", -80.8430209, 35.2287917);
-//        businesses.add(lb);
-//
-//        lb = new LocalBusiness("Burbon Street", "Fish and Chips", "Fort Mills", -80.843726,  35.225338);
-//        businesses.add(lb);
-//
-//        lb = new LocalBusiness("Sushi House", "Sushi", "Plaze Midwood", -80.8410287, 35.2245326);
-//        businesses.add(lb);
-//
-//
-//        return businesses;
-//    }
-//}
 

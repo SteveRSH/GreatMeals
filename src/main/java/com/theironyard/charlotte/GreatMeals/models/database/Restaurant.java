@@ -1,19 +1,39 @@
 package com.theironyard.charlotte.GreatMeals.models.database;
 
-//import com.theironyard.charlotte.GreatMeals.models.yelp.LocalBusiness;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
+
+/**
+ * {
+ *     "id": 1,
+ *     "description": "Best shit in town. NO doubt.",
+ *     "price": 4.55,
+ *     "restaurant": {
+ *          "id": 42,
+ *          "yelp_id": "abcdef",
+ *          "username": "Ben",
+ *          "password": "password",
+ *          "transactions": [
+ *
+ *          ]
+ *     }
+ * }
+ */
+
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "restaurants")
+public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
+    private String yelp_id;
 
     @Column(nullable = false)
     private String username;
@@ -32,6 +52,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getYelp_id() {
+        return yelp_id;
+    }
+
+    public void setYelp_id(String yelp_id) {
+        this.yelp_id = yelp_id;
     }
 
     public String getUsername() {
