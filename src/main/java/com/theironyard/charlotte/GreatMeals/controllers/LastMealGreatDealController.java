@@ -109,6 +109,9 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @GetMapping("/inventory")
     public List<Inventory> getAllInventory() {
+        // TODO: if session owner is restaurant,
+        // TODO: list all inventory with username of that restaurant.
+
         List<Inventory> allInventory = (List<Inventory>) inventoryRepo.findAll();
 
         return allInventory;
@@ -155,6 +158,9 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @GetMapping("/transactions")
     public List<Transaction> getAllRestaurantTransactions() {
+        //TODO: if session owner is a restaurant, find all transactions where
+        //TODO: session owners username is in restaurant db
+
         List<Transaction> allTransactions = (List<Transaction>) transactionRepo.findAll();
 
         return allTransactions;
@@ -195,11 +201,16 @@ public class LastMealGreatDealController {
 //        //return all restaurants in area
 //    }
 //
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void getAllCustomerTransactions() {
-//        //return all restaurants in area
-//    }
+    @CrossOrigin
+    @GetMapping("/transactions")
+    public List<Transaction> getAllCustomerTransactions() {
+        // TODO: if the session owner is customer,
+        // TODO: get all transactions with session owners username
+
+        List<Transaction> allTransactions = (List<Transaction>) transactionRepo.findAll();
+
+        return allTransactions;
+    }
 //
 //    @CrossOrigin
 //    @GetMapping("/customer/restaurants/transactions")
@@ -211,11 +222,13 @@ public class LastMealGreatDealController {
 //    public void searchTransactionsByRestaurant() {
 //        //return all restaurants in area
 //    }
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void viewRestaurantDetails() {
-//        //return all restaurants in area
-//    }
+
+    @CrossOrigin
+    @GetMapping("/restaurants/{yelp_id}")
+    public Restaurant viewRestaurantDetails() {
+        restaurantRepo.findOne(id == ).getId()
+    }
+
 //    @CrossOrigin
 //    @GetMapping("/customer/restaurants/transactions")
 //    public void addToCart() {
