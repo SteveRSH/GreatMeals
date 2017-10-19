@@ -39,7 +39,7 @@ public class Restaurant {
     private String name;
 
     @Column(nullable = false)
-    private int rating;
+    private double rating;
 
     @Column
     private String image_url;
@@ -118,11 +118,11 @@ public class Restaurant {
         this.name = name;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
