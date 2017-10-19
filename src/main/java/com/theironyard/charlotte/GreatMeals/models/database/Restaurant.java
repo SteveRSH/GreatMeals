@@ -64,7 +64,7 @@ public class Restaurant {
 
     @Column(nullable = false)
     private String password;
-    
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
@@ -110,4 +110,67 @@ public class Restaurant {
         this.created_at = created_at;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getDisplay_address() {
+        return display_address;
+    }
+
+    public void setDisplay_address(String display_address) {
+        this.display_address = display_address;
+    }
+
+    public String getDisplay_phone() {
+        return display_phone;
+    }
+
+    public void setDisplay_phone(String display_phone) {
+        this.display_phone = display_phone;
+    }
 }
