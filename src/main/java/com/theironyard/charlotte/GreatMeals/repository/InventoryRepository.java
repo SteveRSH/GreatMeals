@@ -8,4 +8,5 @@ public interface InventoryRepository
     extends CrudRepository<Inventory, Integer> {
 
     Inventory findFirstByRestaurant(Restaurant restaurant);
+    Inventory findFirstById(int id);
 }

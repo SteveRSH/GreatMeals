@@ -134,25 +134,24 @@ public class LastMealGreatDealController {
 //        ///restaurant/{yelp_id}/transactions/search?q={query}
 //        //use query params and search
 //    }
-//
-//    @CrossOrigin
-//    @PostMapping("/restaurant/{yelp_id}/inventory")
-//    public void addToInventory() {
-//        //add to inventory when prompted
-//
-//    }
-//
-//    @CrossOrigin
-//    @DeleteMapping("/restaurant/{yelp_id}/inventory")
-//    public void deleteFromInventory() {
-//        //delete from inventory when prompted
-//    }
-//
-//    @CrossOrigin
-//    @PutMapping("/restaurant/{yelp_id}/inventory")
-//    public void editInventoryItem() {
-//        //replace inventory with edited item
-//    }
+
+    @CrossOrigin
+    @PostMapping("/inventory")
+    public void addInventory(@RequestBody Inventory inventoryItem) {
+        inventoryRepo.save(inventoryItem);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/inventory/{item}")
+    public void deleteFromInventory(@RequestBody Inventory inventoryItem) {
+        inventoryRepo.delete(inventoryItem);
+    }
+
+    @CrossOrigin
+    @PostMapping("/inventory/{item}")
+    public void editInventoryItem(@RequestBody Inventory inventoryItem) {
+       inventoryRepo.save(inventoryItem);
+    }
 
     @CrossOrigin
     @GetMapping("/transactions")
@@ -202,11 +201,11 @@ public class LastMealGreatDealController {
 //
 
 
-    @CrossOrigin
-    @GetMapping("/restaurants")
-    public void viewRestaurantDetails() {
-//        restaurantRepo.findOne(id == ).getId()
-    }
+//    @CrossOrigin
+//    @GetMapping("/restaurants")
+//    public void viewRestaurantDetails() {
+////        restaurantRepo.findOne(id == ).getId()
+//    }
 
 //    @CrossOrigin
 //    @GetMapping("/customer/restaurants/transactions")
