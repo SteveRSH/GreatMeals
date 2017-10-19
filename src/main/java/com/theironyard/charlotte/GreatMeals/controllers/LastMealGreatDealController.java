@@ -224,9 +224,9 @@ public class LastMealGreatDealController {
 //    }
 
     @CrossOrigin
-    @GetMapping("/restaurants/{yelp_id}")
-    public Restaurant viewRestaurantDetails() {
-        restaurantRepo.findOne(id == ).getId()
+    @GetMapping("/restaurants")
+    public void viewRestaurantDetails() {
+//        restaurantRepo.findOne(id == ).getId()
     }
 
 //    @CrossOrigin
