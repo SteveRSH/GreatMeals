@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 public class LastMealGreatDealController {
@@ -345,7 +346,7 @@ public class LastMealGreatDealController {
 
     //********* NON SPECIFIC CONTROLLERS START HERE *******//
 
-//TODO: Sessions
+//TODO: Sessions -- discuss with Ben
 //    @CrossOrigin
 //    @GetMapping("/signin")
 //    public void restaurantSignIn() {
@@ -379,62 +380,34 @@ public class LastMealGreatDealController {
     @PostMapping("/inventory/{restaurant_id}")
     public void addInventory(
             @PathVariable("restaurant_id") int restaurant_id,
-            @RequestParam("description") String description,
-            @RequestParam("price") double price,
-            @RequestParam("num_available") int num_available,
-            @RequestParam("pickup_start") Time pickup_start,
-            @RequestParam("pickup_end") Time pickup_end) {
-
-        Inventory inventory = new Inventory();
-
-        inventory.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
-        inventory.setPrice(price);
-        inventory.setDescription(description);
-        inventory.setNum_available(num_available);
-        inventory.setPickup_start(pickup_start);
-        inventory.setPickup_end(pickup_end);
-
-        inventoryRepo.save(inventory);
+            @RequestBody Inventory item) {
+        item.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
+        inventoryRepo.save(item);
     }
 
-
-//TODO: So close to delete... need to finish this method.
     @CrossOrigin
-    @DeleteMapping("/inventory/{itemName}")
+    @DeleteMapping("/inventory/{itemId}")
     public void deleteFromInventory(
-            @PathVariable("itemName") String description) {
+            @PathVariable("itemId") int id) {
 
-        inventoryRepo.findFirstByDescription(description);
+        Inventory item = inventoryRepo.findOne(id);
+        inventoryRepo.delete(item);
     }
 
     @CrossOrigin
     @PostMapping("/inventory/{itemId}")
     public void editInventoryItem(
-            @PathVariable("itemId") int itemId,
-            @PathVariable("restaurant_id") int restaurant_id,
-            @RequestParam("description") String description,
-            @RequestParam("price") double price,
-            @RequestParam("num_available") int num_available,
-            @RequestParam("pickup_start") Time pickup_start,
-            @RequestParam("pickup_end") Time pickup_end) {
+            @PathVariable("itemId") int id,
+            @RequestBody Inventory item) {
 
-        Inventory inventory = new Inventory();
-
-        inventory.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
-        inventory.setPrice(price);
-        inventory.setDescription(description);
-        inventory.setNum_available(num_available);
-        inventory.setPickup_start(pickup_start);
-        inventory.setPickup_end(pickup_end);
-
-        inventoryRepo.save(inventory);
+        item.setRestaurant(restaurantRepo.findOne(id));
+        inventoryRepo.save(item);
     }
 
-//TODO: For some reason this is not returning values.. 400 error 
     @CrossOrigin
     @GetMapping("/transactions/{restaurant_id}")
     public List<Transaction> getAllTransactions(
-            @RequestParam("restaurant_id") int restaurant_id) {
+            @PathVariable("restaurant_id") int restaurant_id) {
 
         List<Transaction> allTransactions = transactionRepo.findAllByRestaurantId(restaurant_id);
 
@@ -478,16 +451,6 @@ public class LastMealGreatDealController {
 
     //********* CUSTOMER-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
-//TODO: how to return all restaurants within certain longitude and latitude limits?
-//    @CrossOrigin
-//    @GetMapping("/restaurants/{query}")
-//    public List<Restaurant> getAllRestaurants(
-//            @PathVariable(value = "query") String query) {
-//
-//        List<Restaurant> allRestaurantsInArea = restaurantRepo.findAll();
-//        return allRestaurantsInArea;
-//    }
-
     @CrossOrigin
     @GetMapping("/restaurants/{restaurant_id}")
     public Restaurant getRestaurantDetails(
@@ -498,8 +461,27 @@ public class LastMealGreatDealController {
         return restaurant;
     }
 
+//TODO: how to return all restaurants within certain longitude and latitude limits? Discuss with Ben.
+    // /restaurants?lat=<blah>&lng=<blah>
+//    @CrossOrigin
+//    @GetMapping("/restaurants")
+//    public List<Restaurant> getAllRestaurants(
+//            @RequestParam(value = "lat") String lat,
+//            @RequestParam(value = "lng") String lng) {
+//
+//        final double radius = .5;
+//
+//        List<Restaurant> allRestaurantsInArea = (List<Restaurant>)restaurantRepo.findAll();
+//
+//        return allRestaurantsInArea
+//                .stream()
+//                .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
+//                .collect(Collectors.toList());
+//    }
+
+
 //TODO: I think we have to create a new database and separate controller for carts.
-//TODO: We will need to do research on this.
+//TODO: We will need to do research on this. Discuss with Ben.
 //    @CrossOrigin
 //    @GetMapping("/customer/restaurants/transactions")
 //    public void addToCart() {
