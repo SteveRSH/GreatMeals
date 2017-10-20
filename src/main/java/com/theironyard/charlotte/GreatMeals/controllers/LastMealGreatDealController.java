@@ -1,5 +1,6 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
+import com.theironyard.charlotte.GreatMeals.models.RestaurantInventoryWrapper;
 import com.theironyard.charlotte.GreatMeals.models.database.Inventory;
 import com.theironyard.charlotte.GreatMeals.models.database.Restaurant;
 import com.theironyard.charlotte.GreatMeals.models.database.Transaction;
@@ -452,21 +453,23 @@ public class LastMealGreatDealController {
 
     @CrossOrigin
     @GetMapping("/restaurants/{restaurant_id}")
-    public Restaurant getRestaurantDetails(
+    public RestaurantInventoryWrapper getRestaurantDetails(
             @PathVariable("restaurant_id") int restaurant_id) {
 
         Restaurant restaurant = restaurantRepo.findOne(restaurant_id);
 
-        return restaurant;
+        List<Inventory> allInventory = inventoryRepo.findAllByRestaurantId(restaurant_id);
+
+        RestaurantInventoryWrapper wrapper = new RestaurantInventoryWrapper(allInventory, restaurant);
+
+        return wrapper;
     }
 
-//     /restaurants?lat=<blah>&lng=<blah>
+
 
     public double distanceBetweenCoords(double lat1, double lng1, double lat2, double lng2) {
-
         double a = lat1 - lat2;
         double b = lng1 - lng2;
-
         double c = Math.sqrt(a*a + b*b);
 
         return c;
@@ -477,6 +480,7 @@ public class LastMealGreatDealController {
     public List<Restaurant> getAllRestaurants(
             @RequestParam(value = "lat") double lat,
             @RequestParam(value = "lng") double lng) {
+            // /restaurants?lat=<blah>&lng=<blah>
 
         final double radius = .5;
 
