@@ -4,9 +4,11 @@ import com.theironyard.charlotte.GreatMeals.models.database.Inventory;
 import com.theironyard.charlotte.GreatMeals.models.database.Restaurant;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface InventoryRepository
     extends CrudRepository<Inventory, Integer> {
 
     Inventory findFirstByRestaurant(Restaurant restaurant);
-    Inventory findFirstById(int id);
+    List<Inventory> findAllByRestaurantId(int restaurant_id);
 }

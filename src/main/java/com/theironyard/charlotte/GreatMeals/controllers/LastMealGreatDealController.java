@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Time;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -336,9 +337,9 @@ public class LastMealGreatDealController {
     }
 
 
-    //********* RESTAURANT CONTROLLERS START HERE *******//
+    //********* NON SPECIFIC CONTROLLERS START HERE *******//
 
-
+//TODO: Sessions
 //    @CrossOrigin
 //    @GetMapping("/signin")
 //    public void restaurantSignIn() {
@@ -353,16 +354,86 @@ public class LastMealGreatDealController {
 //    }
 
     @CrossOrigin
-    @GetMapping("/inventory")
-    public List<Inventory> getAllInventory() {
-        // TODO: if session owner is restaurant,
-        // TODO: list all inventory with username of that restaurant.
+    @GetMapping("/inventory/{restaurant_id}")
+    public List<Inventory> getAllInventoryFromRestaurant(
+            @PathVariable("restaurant_id") int restaurant_id) {
 
-        List<Inventory> allInventory = (List<Inventory>) inventoryRepo.findAll();
+        List<Inventory> allInventory = inventoryRepo.findAllByRestaurantId(restaurant_id);
 
         return allInventory;
     }
 
+    //*************************************************//
+
+
+    //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//
+
+    @CrossOrigin
+    @PostMapping("/inventory/{restaurant_id}")
+    public void addInventory(
+            @PathVariable("restaurant_id") int restaurant_id,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("num_available") int num_available,
+            @RequestParam("pickup_start") Time pickup_start,
+            @RequestParam("pickup_end") Time pickup_end) {
+
+        Inventory inventory = new Inventory();
+
+        inventory.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
+        inventory.setPrice(price);
+        inventory.setDescription(description);
+        inventory.setNum_available(num_available);
+        inventory.setPickup_start(pickup_start);
+        inventory.setPickup_end(pickup_end);
+
+        inventoryRepo.save(inventory);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/inventory/{itemName}")
+    public void deleteFromInventory(
+            @PathVariable("itemName") Inventory inventoryItem) {
+
+        inventoryRepo.delete(inventoryItem);
+    }
+
+    @CrossOrigin
+    @PostMapping("/inventory/{itemId}")
+    public void editInventoryItem(
+            @PathVariable("itemId") int itemId,
+            @PathVariable("restaurant_id") int restaurant_id,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("num_available") int num_available,
+            @RequestParam("pickup_start") Time pickup_start,
+            @RequestParam("pickup_end") Time pickup_end) {
+
+        Inventory inventory = new Inventory();
+
+        inventory.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
+        inventory.setPrice(price);
+        inventory.setDescription(description);
+        inventory.setNum_available(num_available);
+        inventory.setPickup_start(pickup_start);
+        inventory.setPickup_end(pickup_end);
+
+        inventoryRepo.save(inventory);
+    }
+
+    @CrossOrigin
+    @GetMapping("/transactions/{restaurant_id}")
+    public List<Transaction> getAllTransactions() {
+        //TODO: if session owner is a restaurant, find all transactions where
+        //TODO: session owners username is in restaurant db
+
+
+        List<Transaction> allTransactions = (List<Transaction>) transactionRepo.findAll();
+
+        return allTransactions;
+    }
+
+//TODO: EXTRAS
 //    @CrossOrigin
 //    @GetMapping("/inventory")
 //    public List<Inventory> sortInventory() {
@@ -382,35 +453,6 @@ public class LastMealGreatDealController {
 //        //use query params and search
 //    }
 
-    @CrossOrigin
-    @PostMapping("/inventory")
-    public void addInventory(@RequestBody Inventory inventoryItem) {
-        inventoryRepo.save(inventoryItem);
-    }
-
-    @CrossOrigin
-    @DeleteMapping("/inventory/{item}")
-    public void deleteFromInventory(@RequestBody Inventory inventoryItem) {
-        inventoryRepo.delete(inventoryItem);
-    }
-
-    @CrossOrigin
-    @PostMapping("/inventory/{item}")
-    public void editInventoryItem(@RequestBody Inventory inventoryItem) {
-       inventoryRepo.save(inventoryItem);
-    }
-
-    @CrossOrigin
-    @GetMapping("/transactions")
-    public List<Transaction> getAllTransactions() {
-        //TODO: if session owner is a restaurant, find all transactions where
-        //TODO: session owners username is in restaurant db
-
-        List<Transaction> allTransactions = (List<Transaction>) transactionRepo.findAll();
-
-        return allTransactions;
-    }
-
 //    @CrossOrigin
 //    @GetMapping("/restaurant/{yelp_id}/inventory")
 //    public void sortRestaurantTransactions() {
@@ -425,7 +467,7 @@ public class LastMealGreatDealController {
 
     //*************************************************//
 
-    //********* CUSTOMER CONTROLLERS START HERE *******//
+    //********* CUSTOMER-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
 //
 //    @CrossOrigin
