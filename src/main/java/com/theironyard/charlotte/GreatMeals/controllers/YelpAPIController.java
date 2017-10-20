@@ -4,6 +4,7 @@ package com.theironyard.charlotte.GreatMeals.controllers;
 import com.theironyard.charlotte.GreatMeals.models.yelp.Business;
 
 import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
+import com.theironyard.charlotte.GreatMeals.services.YelpService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,16 +19,7 @@ public class YelpAPIController {
     @CrossOrigin
     @GetMapping(path = "/search/{query}") //temp path to just make it work
     public Response searchTest(@PathVariable(value = "query") String query) {
-        RestTemplate template = new RestTemplate();
-        String url =
-                "https://api.yelp.com/v3/businesses/search?term=" + query + "&latitude=35.227263199999996&longitude=-80.8465059";
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, AUTHTOKEN);
-        HttpEntity<String> request = new HttpEntity<>(headers);
-        Response restaurantList = template.exchange(url, HttpMethod.GET, request, Response.class).getBody();
-
-        return restaurantList;
-
+        return YelpService.getSearchResults(query);
     }
 
     //https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html
