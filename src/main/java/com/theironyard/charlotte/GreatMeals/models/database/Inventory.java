@@ -16,6 +16,15 @@ import java.util.Date;
  *
  *     }
  * }
+ *
+ * {
+ *     "description": string,
+ *     "price": double,
+ *     "num_available: int,
+ *     "pickup_start": time (e.g. 10:00:00),
+ *     "pickup_end": time (e.g. 10:00:00),
+ *     "created_at": date time (e.g. 10-20-2017T10:00:00)
+ * }
  */
 @Entity
 @Table(name = "inventory")

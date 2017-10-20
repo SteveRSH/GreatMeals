@@ -7,4 +7,5 @@ public interface RestaurantRepository
         extends CrudRepository<Restaurant, Integer> {
 
     Restaurant findFirstByUsername(String username);
+    Restaurant findRestaurantById(int id);
 }
