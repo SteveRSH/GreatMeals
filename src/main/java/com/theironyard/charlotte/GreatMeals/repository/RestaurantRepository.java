@@ -8,4 +8,5 @@ public interface RestaurantRepository
 
     Restaurant findFirstByUsername(String username);
     Restaurant findRestaurantById(int id);
+    Restaurant findFirstByUsernameAndPassword(String username, String password); 
 }

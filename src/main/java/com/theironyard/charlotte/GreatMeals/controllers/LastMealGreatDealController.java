@@ -1,27 +1,17 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
-import com.theironyard.charlotte.GreatMeals.models.RestaurantInventoryWrapper;
 import com.theironyard.charlotte.GreatMeals.models.database.Inventory;
 import com.theironyard.charlotte.GreatMeals.models.database.Restaurant;
 import com.theironyard.charlotte.GreatMeals.models.database.Transaction;
 import com.theironyard.charlotte.GreatMeals.models.database.User;
-import com.theironyard.charlotte.GreatMeals.models.yelp.Business;
 import com.theironyard.charlotte.GreatMeals.repository.InventoryRepository;
 import com.theironyard.charlotte.GreatMeals.repository.RestaurantRepository;
 import com.theironyard.charlotte.GreatMeals.repository.TransactionRepository;
 import com.theironyard.charlotte.GreatMeals.repository.UserRepository;
-import com.theironyard.charlotte.GreatMeals.services.YelpService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpSession;
 import java.sql.Time;
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -93,6 +83,114 @@ public class LastMealGreatDealController {
             Restaurant restaurant9 = new Restaurant();
             Restaurant restaurant10 = new Restaurant();
 
+
+//Create inventory items
+            Inventory inventory1 = new Inventory();
+            Inventory inventory2 = new Inventory();
+            Inventory inventory3 = new Inventory();
+            Inventory inventory4 = new Inventory();
+            Inventory inventory5 = new Inventory();
+            Inventory inventory6 = new Inventory();
+            Inventory inventory7 = new Inventory();
+            Inventory inventory8 = new Inventory();
+            Inventory inventory9 = new Inventory();
+            Inventory inventory10 = new Inventory();
+
+//            inventory1.setRestaurant(restaurant1);
+            inventory1.setDescription("kale burger");
+            inventory1.setNum_available(10);
+            inventory1.setPrice(10.99);
+            inventory1.setPrice(10.99);
+            inventory1.setPickup_start(Time.valueOf("22:00:00"));
+            inventory1.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory1);
+
+//            inventory2.setRestaurant(restaurant2);
+            inventory2.setDescription("taco salad");
+            inventory2.setNum_available(10);
+            inventory2.setPrice(10.99);
+            inventory2.setPrice(10.99);
+            inventory2.setPickup_start(Time.valueOf("22:00:00"));
+            inventory2.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory2);
+
+//            inventory3.setRestaurant(restaurant3);
+            inventory3.setDescription("Fish and chips");
+            inventory3.setNum_available(10);
+            inventory3.setPrice(10.99);
+            inventory3.setPrice(10.99);
+            inventory3.setPickup_start(Time.valueOf("22:00:00"));
+            inventory3.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory3);
+
+//            inventory4.setRestaurant(restaurant4);
+            inventory4.setDescription("steak and eggs");
+            inventory4.setNum_available(10);
+            inventory4.setPrice(10.99);
+            inventory4.setPrice(10.99);
+            inventory4.setPickup_start(Time.valueOf("22:00:00"));
+            inventory4.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory4);
+
+//            inventory5.setRestaurant(restaurant5);
+            inventory5.setDescription("sesame chicken");
+            inventory5.setNum_available(10);
+            inventory5.setPrice(10.99);
+            inventory5.setPrice(10.99);
+            inventory5.setPickup_start(Time.valueOf("22:00:00"));
+            inventory5.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory5);
+
+//            inventory6.setRestaurant(restaurant6);
+            inventory6.setDescription("grilled beef and broccoli");
+            inventory6.setNum_available(10);
+            inventory6.setPrice(10.99);
+            inventory6.setPrice(10.99);
+            inventory6.setPickup_start(Time.valueOf("22:00:00"));
+            inventory6.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory6);
+
+//            inventory7.setRestaurant(restaurant7);
+            inventory7.setDescription("Taco burger");
+            inventory7.setNum_available(10);
+            inventory7.setPrice(10.99);
+            inventory7.setPrice(10.99);
+            inventory7.setPickup_start(Time.valueOf("22:00:00"));
+            inventory7.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory7);
+
+//            inventory8.setRestaurant(restaurant8);
+            inventory8.setDescription("Asian salad");
+            inventory8.setNum_available(10);
+            inventory8.setPrice(10.99);
+            inventory8.setPrice(10.99);
+            inventory8.setPickup_start(Time.valueOf("22:00:00"));
+            inventory8.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory8);
+
+//            inventory9.setRestaurant(restaurant9);
+            inventory9.setDescription("Grilled cheese sandwich");
+            inventory9.setNum_available(10);
+            inventory9.setPrice(10.99);
+            inventory9.setPrice(10.99);
+            inventory9.setPickup_start(Time.valueOf("22:00:00"));
+            inventory9.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory9);
+
+
+//            inventory10.setRestaurant(restaurant10);
+            inventory10.setDescription("Almond batter nuggets");
+            inventory10.setNum_available(10);
+            inventory10.setPrice(10.99);
+            inventory10.setPrice(10.99);
+            inventory10.setPickup_start(Time.valueOf("22:00:00"));
+            inventory10.setPickup_end(Time.valueOf("00:00:00"));
+            inventoryRepo.save(inventory10);
+
+
+            //This is for the inventory instantiation
+            List<Inventory> list = Arrays.asList(inventory1);
+
             restaurant1.setYelp_id("the-cellar-at-duckworths-charlotte-2");
             restaurant1.setUsername("hi@duckworths.com");
             restaurant1.setPassword("12345");
@@ -104,8 +202,11 @@ public class LastMealGreatDealController {
             restaurant1.setName("Cellar at Duckworth's");
             restaurant1.setPrice("$$");
             restaurant1.setRating(4.5);
+            restaurant1.setInventory(list);
             restaurantRepo.save(restaurant1);
 
+
+            list = Arrays.asList(inventory2);
 
             restaurant2.setYelp_id("seoul-food-meat-company-charlotte");
             restaurant2.setUsername("hi@seoul.com");
@@ -118,7 +219,10 @@ public class LastMealGreatDealController {
             restaurant2.setName("Seoul Food Meat Company");
             restaurant2.setPrice("$$");
             restaurant2.setRating(4.0);
+            restaurant2.setInventory(list);
             restaurantRepo.save(restaurant2);
+
+            list = Arrays.asList(inventory3);
 
             restaurant3.setYelp_id("roosters-uptown-charlotte-5");
             restaurant3.setUsername("hi@roosters.com");
@@ -131,8 +235,11 @@ public class LastMealGreatDealController {
             restaurant3.setName("Rooster's Uptown");
             restaurant3.setPrice("$$");
             restaurant3.setRating(4.0);
+            restaurant3.setInventory(list);
             restaurantRepo.save(restaurant3);
 
+
+            list = Arrays.asList(inventory4);
 
             restaurant4.setYelp_id("the-kings-kitchen-charlotte");
             restaurant4.setUsername("hi@kingskitchen.com");
@@ -145,7 +252,10 @@ public class LastMealGreatDealController {
             restaurant4.setName("The King's Kitchen");
             restaurant4.setPrice("$$");
             restaurant4.setRating(4.0);
+            restaurant4.setInventory(list);
             restaurantRepo.save(restaurant4);
+
+            list = Arrays.asList(inventory5);
 
             restaurant5.setYelp_id("dandelion-market-charlotte");
             restaurant5.setUsername("hi@dandelionmarket.com");
@@ -158,7 +268,10 @@ public class LastMealGreatDealController {
             restaurant5.setName("Dandelion Market");
             restaurant5.setPrice("$$");
             restaurant5.setRating(4.0);
+            restaurant5.setInventory(list);
             restaurantRepo.save(restaurant5);
+
+            list = Arrays.asList(inventory6);
 
 
             restaurant6.setYelp_id("murphys-kitchen-and-tap-charlotte-2");
@@ -172,7 +285,10 @@ public class LastMealGreatDealController {
             restaurant6.setName("Murphy's Kitchen & Tap");
             restaurant6.setPrice("$$");
             restaurant6.setRating(4.5);
+            restaurant6.setInventory(list);
             restaurantRepo.save(restaurant6);
+
+            list = Arrays.asList(inventory7);
 
             restaurant7.setYelp_id("stoke-charlotte-2\"");
             restaurant7.setUsername("hi@stoke.com");
@@ -185,8 +301,10 @@ public class LastMealGreatDealController {
             restaurant7.setName("Stoke");
             restaurant7.setPrice("$$");
             restaurant7.setRating(4.0);
+            restaurant7.setInventory(list);
             restaurantRepo.save(restaurant7);
 
+            list = Arrays.asList(inventory8);
 
             restaurant8.setYelp_id("mimosa-grill-charlotte");
             restaurant8.setUsername("hi@mimosagrill.com");
@@ -199,7 +317,10 @@ public class LastMealGreatDealController {
             restaurant8.setName("Mimosa Grill");
             restaurant8.setPrice("$$");
             restaurant8.setRating(4.0);
+            restaurant8.setInventory(list);
             restaurantRepo.save(restaurant8);
+
+            list = Arrays.asList(inventory9);
 
             restaurant9.setYelp_id("viva-chicken-charlotte");
             restaurant9.setUsername("hi@vivachicken.com");
@@ -212,7 +333,10 @@ public class LastMealGreatDealController {
             restaurant9.setName("Viva Chicken");
             restaurant9.setPrice("$");
             restaurant9.setRating(4.5);
+            restaurant9.setInventory(list);
             restaurantRepo.save(restaurant9);
+
+            list = Arrays.asList(inventory10);
 
             restaurant10.setYelp_id("alexander-michaels-charlotte");
             restaurant10.setUsername("hi@alexandermichaels.com");
@@ -225,109 +349,8 @@ public class LastMealGreatDealController {
             restaurant10.setName("Alexander Michael's");
             restaurant10.setPrice("$$");
             restaurant10.setRating(4.5);
+            restaurant10.setInventory(list);
             restaurantRepo.save(restaurant10);
-
-            Inventory inventory1 = new Inventory();
-            Inventory inventory2 = new Inventory();
-            Inventory inventory3 = new Inventory();
-            Inventory inventory4 = new Inventory();
-            Inventory inventory5 = new Inventory();
-            Inventory inventory6 = new Inventory();
-            Inventory inventory7 = new Inventory();
-            Inventory inventory8 = new Inventory();
-            Inventory inventory9 = new Inventory();
-            Inventory inventory10 = new Inventory();
-
-            inventory1.setRestaurant(restaurant1);
-            inventory1.setDescription("kale burger");
-            inventory1.setNum_available(10);
-            inventory1.setPrice(10.99);
-            inventory1.setPrice(10.99);
-            inventory1.setPickup_start(Time.valueOf("22:00:00"));
-            inventory1.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory1);
-
-            inventory2.setRestaurant(restaurant2);
-            inventory2.setDescription("taco salad");
-            inventory2.setNum_available(10);
-            inventory2.setPrice(10.99);
-            inventory2.setPrice(10.99);
-            inventory2.setPickup_start(Time.valueOf("22:00:00"));
-            inventory2.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory2);
-
-            inventory3.setRestaurant(restaurant3);
-            inventory3.setDescription("Fish and chips");
-            inventory3.setNum_available(10);
-            inventory3.setPrice(10.99);
-            inventory3.setPrice(10.99);
-            inventory3.setPickup_start(Time.valueOf("22:00:00"));
-            inventory3.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory3);
-
-            inventory4.setRestaurant(restaurant4);
-            inventory4.setDescription("steak and eggs");
-            inventory4.setNum_available(10);
-            inventory4.setPrice(10.99);
-            inventory4.setPrice(10.99);
-            inventory4.setPickup_start(Time.valueOf("22:00:00"));
-            inventory4.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory4);
-
-            inventory5.setRestaurant(restaurant5);
-            inventory5.setDescription("sesame chicken");
-            inventory5.setNum_available(10);
-            inventory5.setPrice(10.99);
-            inventory5.setPrice(10.99);
-            inventory5.setPickup_start(Time.valueOf("22:00:00"));
-            inventory5.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory5);
-
-            inventory6.setRestaurant(restaurant6);
-            inventory6.setDescription("grilled beef and broccoli");
-            inventory6.setNum_available(10);
-            inventory6.setPrice(10.99);
-            inventory6.setPrice(10.99);
-            inventory6.setPickup_start(Time.valueOf("22:00:00"));
-            inventory6.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory6);
-
-            inventory7.setRestaurant(restaurant7);
-            inventory7.setDescription("Taco burger");
-            inventory7.setNum_available(10);
-            inventory7.setPrice(10.99);
-            inventory7.setPrice(10.99);
-            inventory7.setPickup_start(Time.valueOf("22:00:00"));
-            inventory7.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory7);
-
-            inventory8.setRestaurant(restaurant8);
-            inventory8.setDescription("Asian salad");
-            inventory8.setNum_available(10);
-            inventory8.setPrice(10.99);
-            inventory8.setPrice(10.99);
-            inventory8.setPickup_start(Time.valueOf("22:00:00"));
-            inventory8.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory8);
-
-            inventory9.setRestaurant(restaurant9);
-            inventory9.setDescription("Grilled cheese sandwich");
-            inventory9.setNum_available(10);
-            inventory9.setPrice(10.99);
-            inventory9.setPrice(10.99);
-            inventory9.setPickup_start(Time.valueOf("22:00:00"));
-            inventory9.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory9);
-
-
-            inventory10.setRestaurant(restaurant10);
-            inventory10.setDescription("Almond batter nuggets");
-            inventory10.setNum_available(10);
-            inventory10.setPrice(10.99);
-            inventory10.setPrice(10.99);
-            inventory10.setPickup_start(Time.valueOf("22:00:00"));
-            inventory10.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory10);
 
 
             transaction1.setRestaurant(restaurant1);
@@ -355,8 +378,8 @@ public class LastMealGreatDealController {
 //    }
 //
 //    @CrossOrigin
-//    @GetMapping("/logout")
-//    public void restaurantLogout() {
+//    @GetMapping("/signout")
+//    public void restaurantSignout() {
 //
 //    }
 
@@ -366,14 +389,24 @@ public class LastMealGreatDealController {
     //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//\
 
     @CrossOrigin
-    @GetMapping("/inventory/{restaurant_id}")
-    public List<Inventory> getAllInventory(
-            @PathVariable("restaurant_id") int restaurant_id) {
+    @GetMapping("/restaurant-signin")
+    public void restaurantSignIn() {
+//        User u = restaurantRepo;
 
-        List<Inventory> allInventory = inventoryRepo.findAllByRestaurantId(restaurant_id);
-
-        return allInventory;
     }
+
+
+    //Mike: this is no longer needed
+
+//    @CrossOrigin
+//    @GetMapping("/inventory/{restaurant_id}")
+//    public List<Inventory> getAllInventory(
+//            @PathVariable("restaurant_id") int restaurant_id) {
+//
+////        List<Inventory> allInventory = inventoryRepo.findAllByRestaurantId(restaurant_id);
+//
+//        return allInventory;
+//    }
 
 
     @CrossOrigin
@@ -381,7 +414,9 @@ public class LastMealGreatDealController {
     public void addInventory(
             @PathVariable("restaurant_id") int restaurant_id,
             @RequestBody Inventory item) {
-        item.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
+
+        //We will discuss this
+//       item.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
         inventoryRepo.save(item);
     }
 
@@ -399,8 +434,8 @@ public class LastMealGreatDealController {
     public void editInventoryItem(
             @PathVariable("itemId") int id,
             @RequestBody Inventory item) {
-
-        item.setRestaurant(restaurantRepo.findOne(id));
+//We will discuss this
+//        item.setRestaurant(restaurantRepo.findOne(id));
         inventoryRepo.save(item);
     }
 
@@ -452,20 +487,15 @@ public class LastMealGreatDealController {
     //********* CUSTOMER-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
     @CrossOrigin
-    @GetMapping("/restaurants/{restaurant_id}")
-    public RestaurantInventoryWrapper getRestaurantDetails(
+    //Changed this to /restaurant because /restaurants was breaking the one below
+    @GetMapping("/restaurant/{restaurant_id}")
+    public Restaurant getRestaurantDetails(
             @PathVariable("restaurant_id") int restaurant_id) {
 
         Restaurant restaurant = restaurantRepo.findOne(restaurant_id);
 
-        List<Inventory> allInventory = inventoryRepo.findAllByRestaurantId(restaurant_id);
-
-        RestaurantInventoryWrapper wrapper = new RestaurantInventoryWrapper(allInventory, restaurant);
-
-        return wrapper;
+        return restaurant;
     }
-
-
 
     public double distanceBetweenCoords(double lat1, double lng1, double lat2, double lng2) {
         double a = lat1 - lat2;
@@ -481,15 +511,16 @@ public class LastMealGreatDealController {
             @RequestParam(value = "lat") double lat,
             @RequestParam(value = "lng") double lng) {
             // /restaurants?lat=<blah>&lng=<blah>
-
+        List<Inventory> inventories;
         final double radius = .5;
 
         List<Restaurant> allRestaurantsInArea = (List<Restaurant>)restaurantRepo.findAll();
 
-        return allRestaurantsInArea
-                .stream()
-                .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
-                .collect(Collectors.toList());
+        return allRestaurantsInArea;
+        //Fix this
+//                .stream()
+//                .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
+//                .collect(Collectors.toList());
     }
 
 

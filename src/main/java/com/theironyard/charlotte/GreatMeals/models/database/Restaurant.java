@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 
@@ -31,6 +32,10 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+
+    @OneToMany
+    private List<Inventory> inventory;
 
     @Column(nullable = false)
     private String yelp_id;
@@ -69,6 +74,14 @@ public class Restaurant {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
     private Date created_at;
+
+    public List<Inventory> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(List<Inventory> inventory) {
+        this.inventory = inventory;
+    }
 
     public int getId() {
         return id;

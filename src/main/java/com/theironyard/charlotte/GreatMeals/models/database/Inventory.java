@@ -1,5 +1,6 @@
 package com.theironyard.charlotte.GreatMeals.models.database;
 
+import jdk.nashorn.internal.ir.annotations.Reference;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -33,9 +34,6 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    Restaurant restaurant;
-
     @Column(nullable = false)
     private String description;
 
@@ -63,14 +61,6 @@ public class Inventory {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 
     public String getDescription() {

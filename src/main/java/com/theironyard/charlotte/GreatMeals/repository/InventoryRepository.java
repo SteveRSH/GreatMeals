@@ -9,7 +9,5 @@ import java.util.List;
 public interface InventoryRepository
     extends CrudRepository<Inventory, Integer> {
 
-    Inventory findFirstByRestaurant(Restaurant restaurant);
-    List<Inventory> findAllByRestaurantId(int restaurant_id);
     Inventory findFirstByDescription(String description);
 }
