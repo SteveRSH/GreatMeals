@@ -11,5 +11,5 @@ public interface TransactionRepository
         extends CrudRepository<Transaction, Integer> {
     List<Transaction> findByUser(User u);
 
-    List<Transaction> findByRestaurant(Restaurant r);
+    List<Transaction> findAllByRestaurantId(int restaurant_id);
 }

@@ -11,4 +11,5 @@ public interface InventoryRepository
 
     Inventory findFirstByRestaurant(Restaurant restaurant);
     List<Inventory> findAllByRestaurantId(int restaurant_id);
+    Inventory findFirstByDescription(String description);
 }

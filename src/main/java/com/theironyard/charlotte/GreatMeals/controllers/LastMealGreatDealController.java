@@ -1,16 +1,22 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import com.theironyard.charlotte.GreatMeals.models.database.Inventory;
 import com.theironyard.charlotte.GreatMeals.models.database.Restaurant;
 import com.theironyard.charlotte.GreatMeals.models.database.Transaction;
 import com.theironyard.charlotte.GreatMeals.models.database.User;
+import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
 import com.theironyard.charlotte.GreatMeals.repository.InventoryRepository;
 import com.theironyard.charlotte.GreatMeals.repository.RestaurantRepository;
 import com.theironyard.charlotte.GreatMeals.repository.TransactionRepository;
 import com.theironyard.charlotte.GreatMeals.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Time;
@@ -353,9 +359,14 @@ public class LastMealGreatDealController {
 //
 //    }
 
+    //*************************************************//
+
+
+    //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//\
+
     @CrossOrigin
     @GetMapping("/inventory/{restaurant_id}")
-    public List<Inventory> getAllInventoryFromRestaurant(
+    public List<Inventory> getAllInventory(
             @PathVariable("restaurant_id") int restaurant_id) {
 
         List<Inventory> allInventory = inventoryRepo.findAllByRestaurantId(restaurant_id);
@@ -363,10 +374,6 @@ public class LastMealGreatDealController {
         return allInventory;
     }
 
-    //*************************************************//
-
-
-    //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
     @CrossOrigin
     @PostMapping("/inventory/{restaurant_id}")
@@ -390,12 +397,14 @@ public class LastMealGreatDealController {
         inventoryRepo.save(inventory);
     }
 
+
+//TODO: So close to delete... need to finish this method.
     @CrossOrigin
     @DeleteMapping("/inventory/{itemName}")
     public void deleteFromInventory(
-            @PathVariable("itemName") Inventory inventoryItem) {
+            @PathVariable("itemName") String description) {
 
-        inventoryRepo.delete(inventoryItem);
+        inventoryRepo.findFirstByDescription(description);
     }
 
     @CrossOrigin
@@ -421,19 +430,19 @@ public class LastMealGreatDealController {
         inventoryRepo.save(inventory);
     }
 
+//TODO: For some reason this is not returning values.. 400 error 
     @CrossOrigin
     @GetMapping("/transactions/{restaurant_id}")
-    public List<Transaction> getAllTransactions() {
-        //TODO: if session owner is a restaurant, find all transactions where
-        //TODO: session owners username is in restaurant db
+    public List<Transaction> getAllTransactions(
+            @RequestParam("restaurant_id") int restaurant_id) {
 
-
-        List<Transaction> allTransactions = (List<Transaction>) transactionRepo.findAll();
+        List<Transaction> allTransactions = transactionRepo.findAllByRestaurantId(restaurant_id);
 
         return allTransactions;
     }
 
-//TODO: EXTRAS
+
+//TODO: EXTRAS with SORT and SEARCH
 //    @CrossOrigin
 //    @GetMapping("/inventory")
 //    public List<Inventory> sortInventory() {
@@ -469,13 +478,51 @@ public class LastMealGreatDealController {
 
     //********* CUSTOMER-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
-//
+//TODO: how to return all restaurants within certain longitude and latitude limits?
 //    @CrossOrigin
-//    @GetMapping("/customer")
-//    public void renderAllRestaurants() {
+//    @GetMapping("/restaurants/{query}")
+//    public List<Restaurant> getAllRestaurants(
+//            @PathVariable(value = "query") String query) {
+//
+//        List<Restaurant> allRestaurantsInArea = restaurantRepo.findAll();
+//        return allRestaurantsInArea;
+//    }
+
+    @CrossOrigin
+    @GetMapping("/restaurants/{restaurant_id}")
+    public Restaurant getRestaurantDetails(
+            @PathVariable("restaurant_id") int restaurant_id) {
+
+        Restaurant restaurant = restaurantRepo.findOne(restaurant_id);
+
+        return restaurant;
+    }
+
+//TODO: I think we have to create a new database and separate controller for carts.
+//TODO: We will need to do research on this.
+//    @CrossOrigin
+//    @GetMapping("/customer/restaurants/transactions")
+//    public void addToCart() {
 //        //return all restaurants in area
 //    }
-//
+//    @CrossOrigin
+//    @GetMapping("/customer/restaurants/transactions")
+//    public void payForFood() {
+//        //return all restaurants in area
+//    }
+
+//TODO: For the confirmation page (the one that comes immediately after they make a
+//TODO: purchase) -- we need to think through whether we really need a separate
+//TODO: endpoint for this.  What we can do is, create an application response
+//TODO: (to the purchase endpoint) as a JSON object that they can display on their page.
+//    @CrossOrigin
+//    @GetMapping("/customer/restaurants/transactions")
+//    public void confirmation() {
+//        //return all restaurants in area
+//    }
+
+
+//TODO: EXTRAS with SORT and SEARCH
 //    @CrossOrigin
 //    @GetMapping("/customer/restaurants/sort=<field name><direction>")
 //    public void sortRestaurants() {
@@ -488,28 +535,5 @@ public class LastMealGreatDealController {
 //        //return all restaurants in area
 //    }
 //
-
-
-//    @CrossOrigin
-//    @GetMapping("/restaurants")
-//    public void viewRestaurantDetails() {
-////        restaurantRepo.findOne(id == ).getId()
-//    }
-
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void addToCart() {
-//        //return all restaurants in area
-//    }
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void payForFood() {
-//        //return all restaurants in area
-//    }
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void confirmation() {
-//        //return all restaurants in area
-//    }
     //*************************************************//
 }
