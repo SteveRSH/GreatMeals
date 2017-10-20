@@ -42,17 +42,16 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @GetMapping("/")
     public void renderHomePage() {
-        Set<Transaction> tranSet = new HashSet<>();
         Transaction transaction1 = new Transaction();
         transaction1.setTotal(132.50);
         Transaction transaction2 = new Transaction();
         transaction2.setTotal(100.50);
 
-        tranSet.add(transaction1);
-        tranSet.add(transaction2);
+        transactionRepo.save(transaction1);
+        transactionRepo.save(transaction2);
 
-        User user = new User();
         User userExists = userRepo.findFirstByUsername("test@test.com");
+        User user = new User();
 
         if (userExists == null) {
             user.setUsername("test@test.com");
@@ -334,7 +333,9 @@ public class LastMealGreatDealController {
             transaction2.setRestaurant(restaurant2);
             transaction1.setUser(user);
             transaction2.setUser(user);
-            transactionRepo.save(tranSet);
+
+            transactionRepo.save(transaction1);
+            transactionRepo.save(transaction2);
         }
     }
 
