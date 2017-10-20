@@ -460,23 +460,33 @@ public class LastMealGreatDealController {
         return restaurant;
     }
 
-//TODO: how to return all restaurants within certain longitude and latitude limits? Discuss with Ben.
-    // /restaurants?lat=<blah>&lng=<blah>
-//    @CrossOrigin
-//    @GetMapping("/restaurants")
-//    public List<Restaurant> getAllRestaurants(
-//            @RequestParam(value = "lat") String lat,
-//            @RequestParam(value = "lng") String lng) {
-//
-//        final double radius = .5;
-//
-//        List<Restaurant> allRestaurantsInArea = (List<Restaurant>)restaurantRepo.findAll();
-//
-//        return allRestaurantsInArea
-//                .stream()
-//                .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
-//                .collect(Collectors.toList());
-//    }
+//     /restaurants?lat=<blah>&lng=<blah>
+
+    public double distanceBetweenCoords(double lat1, double lng1, double lat2, double lng2) {
+
+        double a = lat1 - lat2;
+        double b = lng1 - lng2;
+
+        double c = Math.sqrt(a*a + b*b);
+
+        return c;
+    }
+
+    @CrossOrigin
+    @GetMapping("/restaurants")
+    public List<Restaurant> getAllRestaurants(
+            @RequestParam(value = "lat") double lat,
+            @RequestParam(value = "lng") double lng) {
+
+        final double radius = .5;
+
+        List<Restaurant> allRestaurantsInArea = (List<Restaurant>)restaurantRepo.findAll();
+
+        return allRestaurantsInArea
+                .stream()
+                .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
+                .collect(Collectors.toList());
+    }
 
 
 //TODO: I think we have to create a new database and separate controller for carts.
