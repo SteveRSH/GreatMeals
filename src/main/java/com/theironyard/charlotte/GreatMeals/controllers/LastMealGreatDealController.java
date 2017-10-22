@@ -367,23 +367,7 @@ public class LastMealGreatDealController {
 
 
 
-    //********* NON SPECIFIC CONTROLLERS START HERE *******//
 
-//TODO: Sessions -- discuss with Ben
-//    @CrossOrigin
-//    @GetMapping("/signin")
-//    public void restaurantSignIn() {
-
-//
-//    }
-//
-//    @CrossOrigin
-//    @GetMapping("/signout")
-//    public void restaurantSignout() {
-//
-//    }
-
-    //*************************************************//
 
 
     //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//\
@@ -395,17 +379,11 @@ public class LastMealGreatDealController {
 
     }
 
-
-    //Mike: this is no longer needed
-
+//
 //    @CrossOrigin
-//    @GetMapping("/inventory/{restaurant_id}")
-//    public List<Inventory> getAllInventory(
-//            @PathVariable("restaurant_id") int restaurant_id) {
+//    @GetMapping("/signout")
+//    public void restaurantSignout() {
 //
-////        List<Inventory> allInventory = inventoryRepo.findAllByRestaurantId(restaurant_id);
-//
-//        return allInventory;
 //    }
 
 
@@ -415,9 +393,13 @@ public class LastMealGreatDealController {
             @PathVariable("restaurant_id") int restaurant_id,
             @RequestBody Inventory item) {
 
-        //We will discuss this
-//       item.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
         inventoryRepo.save(item);
+        Restaurant restaurant = restaurantRepo.findRestaurantById(restaurant_id);
+        List<Inventory> inventory = restaurant.getInventory();
+        inventory.add(item);
+        restaurant.setInventory(inventory);
+        restaurantRepo.save(restaurant);
+
     }
 
     @CrossOrigin
@@ -425,6 +407,7 @@ public class LastMealGreatDealController {
     public void deleteFromInventory(
             @PathVariable("itemId") int id) {
 
+        //TODO Check to make sure that this is deleted from restaurant as well
         Inventory item = inventoryRepo.findOne(id);
         inventoryRepo.delete(item);
     }
@@ -434,8 +417,8 @@ public class LastMealGreatDealController {
     public void editInventoryItem(
             @PathVariable("itemId") int id,
             @RequestBody Inventory item) {
-//We will discuss this
-//        item.setRestaurant(restaurantRepo.findOne(id));
+
+        //TODO make sure this is updated in the restaurant
         inventoryRepo.save(item);
     }
 
@@ -511,16 +494,14 @@ public class LastMealGreatDealController {
             @RequestParam(value = "lat") double lat,
             @RequestParam(value = "lng") double lng) {
             // /restaurants?lat=<blah>&lng=<blah>
-        List<Inventory> inventories;
         final double radius = .5;
 
         List<Restaurant> allRestaurantsInArea = (List<Restaurant>)restaurantRepo.findAll();
 
-        return allRestaurantsInArea;
-        //Fix this
-//                .stream()
-//                .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
-//                .collect(Collectors.toList());
+        return allRestaurantsInArea
+                .stream()
+               .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
+                .collect(Collectors.toList());
     }
 
 
