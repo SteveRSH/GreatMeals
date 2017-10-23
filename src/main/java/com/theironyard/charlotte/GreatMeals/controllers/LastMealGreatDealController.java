@@ -566,20 +566,21 @@ public class LastMealGreatDealController {
     public List<Restaurant> getAllRestaurants(
             @RequestParam(value = "lat") double lat,
             @RequestParam(value = "lng") double lng,
-            HttpSession session) {
+//            HttpSession session
+    ) {
 
         //TODO: verify math works
         final double radius = .5;
 
-        if (session.getAttribute("current_customer_user") != null) {
+//        if (session.getAttribute("current_customer_user") != null) {
             List<Restaurant> allRestaurantsInArea = (List<Restaurant>) restaurantRepo.findAll();
 
             return allRestaurantsInArea
                     .stream()
                     .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
                     .collect(Collectors.toList());
-        }
-        return null;
+//        }
+//        return null;
     }
 
     @CrossOrigin
@@ -620,7 +621,6 @@ public class LastMealGreatDealController {
         return cart;
     }
 
-    //TODO: Tested on Postman and it hangs... Not sure why not returning either empty or full cart. Ask Ben.
     @CrossOrigin
     @GetMapping("/cart")
     public List<Inventory> getAllStuffInCart(HttpSession session) {
