@@ -1,0 +1,71 @@
+package com.theironyard.charlotte.GreatMeals.controllers;
+
+
+import com.theironyard.charlotte.GreatMeals.models.database.Restaurant;
+import com.theironyard.charlotte.GreatMeals.models.yelp.Business;
+
+import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
+import com.theironyard.charlotte.GreatMeals.services.YelpService;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+@RestController
+public class YelpAPIController {
+    private static final String AUTHTOKEN = "Bearer ze16p9aetTdlbCkdM4p2cOb2i9B-Dgt8JJkxkzs7Nyt4FKSrN8l5Jmkz_TJP28iW3XG-jm8z1z2peHpLYWjSC6kcd5Nw3ceB3QdAg1n7z_dIZHf6JulyHM-GfU3eWXYx";
+
+    // /search
+    @CrossOrigin
+    @GetMapping(path = "/search/{query}") //temp path to just make it work
+    public Response searchTest(@PathVariable(value = "query") String query) {
+        return YelpService.getSearchResults(query);
+    }
+
+    //https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html
+    //https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpHeaders.html
+
+    @GetMapping("/restaurantsmeals")
+    public Response restaurants() {
+        RestTemplate restaurantTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + AUTHTOKEN);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        Response response = restaurantTemplate
+                .exchange("https://api.yelp.com/v3/businesses/search?term=food+restaurants&latitude=35.227263199999996&longitude=-80.8465059",
+                        HttpMethod.GET,
+                        entity,
+                        Response.class)
+                .getBody();
+
+        return response;
+
+    }
+
+    @GetMapping("/singlebusiness/{yelpId}")
+    public Restaurant getBusiness(@PathVariable String yelpId) {
+        return YelpService.getSingleBusinessAsRestaurant("georges-brasserie-charlotte");
+    }
+
+    @GetMapping("/restaurantsmeals/{id}")
+    public Business restaurantgreatmeals(@PathVariable String id){
+        RestTemplate restaurantTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + AUTHTOKEN);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        Business response = restaurantTemplate
+                .exchange("https://api.yelp.com/v3/businesses/" + id,
+                        HttpMethod.GET,
+                        entity,
+                        Business.class)
+                .getBody();
+
+        return response;
+    }
+}
+
+:wq
+

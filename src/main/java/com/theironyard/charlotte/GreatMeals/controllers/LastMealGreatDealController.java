@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -373,14 +375,17 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @PostMapping("/restaurant-signin")
     public void restaurantSignIn(
-            @RequestParam String username,
-            @RequestParam String password,
-            HttpSession session) {
+            @RequestBody Restaurant restaurant, HttpSession session, HttpServletResponse response) throws IOException {
         Restaurant user = restaurantRepo
-                .findFirstByUsernameAndPassword(username, password);
+                .findFirstByUsernameAndPassword(restaurant.getUsername(), restaurant.getPassword());
 
         if (user != null) {
+            // if the user's not null, set their session
             session.setAttribute("current_restaurant_user", user.getId());
+        } else {
+            // the user was not found, which means nobody had this username/password combo
+            // send a "403", or "access denied" error.
+            response.sendError(403);
         }
     }
 
@@ -522,17 +527,16 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @PostMapping("/customer-signin")
     public void customerSignIn(
-            //TODO: Possibly change this to parse JSON instead of form input, same with restaurant
-            @RequestParam String username,
-            @RequestParam String password,
-            HttpSession session) {
+            @RequestBody User customer, HttpSession session, HttpServletResponse response) throws IOException {
         User user = userRepo
-                .findFirstByUsernameAndPassword(username, password);
-        System.out.println(username);
-        System.out.println(password);
+                .findFirstByUsernameAndPassword(customer.getUsername(), customer.getPassword());
         if (user != null) {
+            // if the user's not null, set their session
             session.setAttribute("current_customer_user", user.getId());
-            System.out.println("poo");
+        } else {
+            // the user was not found, which means nobody had this username/password combo
+            // send a "403", or "access denied" error.
+            response.sendError(403);
         }
     }
 
@@ -565,21 +569,23 @@ public class LastMealGreatDealController {
     // /restaurants?lat=<blah>&lng=<blah>
     public List<Restaurant> getAllRestaurants(
             @RequestParam(value = "lat") double lat,
-            @RequestParam(value = "lng") double lng,
-            HttpSession session) {
+            @RequestParam(value = "lng") double lng
+//            HttpSession session
+    ) {
 
         //TODO: verify math works
         final double radius = .5;
 
-        if (session.getAttribute("current_customer_user") != null) {
+        //TODO: uncomment session when front end is ready
+//        if (session.getAttribute("current_customer_user") != null) {
             List<Restaurant> allRestaurantsInArea = (List<Restaurant>) restaurantRepo.findAll();
 
             return allRestaurantsInArea
                     .stream()
                     .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
                     .collect(Collectors.toList());
-        }
-        return null;
+//        }
+//        return null;
     }
 
     @CrossOrigin
@@ -589,7 +595,7 @@ public class LastMealGreatDealController {
             @RequestParam(value = "quantity") int quantity,
             HttpSession session) {
 
-        List<Inventory> cart = new ArrayList<Inventory>();
+        List<Inventory> cart = new ArrayList<>();
         if (session.getAttribute("current_customer_user") != null) {
 
             //if the session doesnt have a cart already, add a cart.
@@ -609,7 +615,8 @@ public class LastMealGreatDealController {
             } else if (quantity == 0) {
                 cart.remove(item);
             } else {
-                    //if I want 8 hotdogs and I only have 6, it will give me 6 -- the max amount available.
+                    //if a customer wants 8 hotdogs and I only have 6, it will give the customer 6 -- the max
+                    // amount available.
                     cart.add(item);
                 }
             }
@@ -620,11 +627,10 @@ public class LastMealGreatDealController {
         return cart;
     }
 
-    //TODO: Tested on Postman and it hangs... Not sure why not returning either empty or full cart. Ask Ben.
     @CrossOrigin
     @GetMapping("/cart")
     public List<Inventory> getAllStuffInCart(HttpSession session) {
-        List<Inventory> cart = new ArrayList<Inventory>();
+        List<Inventory> cart = new ArrayList<>();
         if (session.getAttribute("current_customer_user") != null) {
              cart = (List<Inventory>) session.getAttribute("cart");
         }
@@ -638,7 +644,6 @@ public class LastMealGreatDealController {
             Transaction transaction,
             HttpSession session) {
         if (session.getAttribute("current_customer_user") != null) {
-            System.out.println("Hi im here");
 
             //Assign the session's cart to a variable that we can process
             List<Inventory> cart = (List<Inventory>) session.getAttribute("cart");
@@ -646,14 +651,11 @@ public class LastMealGreatDealController {
 
             //For all items in the session cart, add price* quantity to the total bill
             for (Inventory cartItems : cart) {
-                System.out.println("I've got money. Honey. ");
                 totalBill += (cartItems.getPrice()*cartItems.getNum_available());
             }
 
             if (transaction.processCard(totalBill)) {
-                System.out.println("CC ind a house");
                 for (Inventory stuffInCart : cart) {
-                    System.out.println("hi");
                     Inventory tempObject = inventoryRepo.findOne(stuffInCart.getId());
 
                     //set the num_available for object in database to ... whats left
