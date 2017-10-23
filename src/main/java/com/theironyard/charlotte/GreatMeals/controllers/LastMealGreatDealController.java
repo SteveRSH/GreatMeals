@@ -102,16 +102,48 @@ public class LastMealGreatDealController {
             Inventory inventory8 = new Inventory();
             Inventory inventory9 = new Inventory();
             Inventory inventory10 = new Inventory();
+            Inventory inventory11 = new Inventory();
+            Inventory inventory12 = new Inventory();
+            Inventory inventory13 = new Inventory();
+            Inventory inventory14 = new Inventory();
 
             List<Inventory> list = Arrays.asList(inventory10);
+            list.add(inventory11);
+            list.add(inventory12);
+            list.add(inventory13);
+            list.add(inventory14);
+            System.out.println(list);
 
             //Setting all the values...
             inventory10.setDescription("Almond batter nuggets");
             inventory10.setNum_available(10);
-            inventory10.setPrice(10.99);
-            inventory10.setPrice(10.99);
+            inventory10.setPrice(5);
             inventory10.setPickup_start(Time.valueOf("22:00:00"));
             inventory10.setPickup_end(Time.valueOf("00:00:00"));
+
+            inventory11.setDescription("Chop suey Sandwich");
+            inventory11.setNum_available(10);
+            inventory11.setPrice(3.50);
+            inventory11.setPickup_start(Time.valueOf("22:00:00"));
+            inventory11.setPickup_end(Time.valueOf("00:00:00"));
+
+            inventory12.setDescription("Lobster Mac n Cheese");
+            inventory12.setNum_available(10);
+            inventory12.setPrice(2.99);
+            inventory12.setPickup_start(Time.valueOf("22:00:00"));
+            inventory12.setPickup_end(Time.valueOf("00:00:00"));
+
+            inventory13.setDescription("Chicken fried rice");
+            inventory13.setNum_available(10);
+            inventory13.setPrice(4.50);
+            inventory13.setPickup_start(Time.valueOf("22:00:00"));
+            inventory13.setPickup_end(Time.valueOf("00:00:00"));
+
+            inventory14.setDescription("Burger and fries");
+            inventory14.setNum_available(10);
+            inventory14.setPrice(5);
+            inventory14.setPickup_start(Time.valueOf("22:00:00"));
+            inventory14.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant1.setYelp_id("the-cellar-at-duckworths-charlotte-2");
             restaurant1.setUsername("hi@duckworths.com");
@@ -128,6 +160,10 @@ public class LastMealGreatDealController {
 
             //Note on weird ordering: had to do it this way to get them all saved to the database.
             inventory10.setRestaurant(restaurant1);
+            inventory11.setRestaurant(restaurant1);
+            inventory13.setRestaurant(restaurant1);
+            inventory14.setRestaurant(restaurant1);
+            inventory12.setRestaurant(restaurant1);
             restaurantRepo.save(restaurant1);
 
             //I create a new list for every inventory instance. Then I change the value of list so that it points to
@@ -136,7 +172,6 @@ public class LastMealGreatDealController {
 
             inventory9.setDescription("Grilled cheese sandwich");
             inventory9.setNum_available(10);
-            inventory9.setPrice(10.99);
             inventory9.setPrice(10.99);
             inventory9.setPickup_start(Time.valueOf("22:00:00"));
             inventory9.setPickup_end(Time.valueOf("00:00:00"));
@@ -161,7 +196,6 @@ public class LastMealGreatDealController {
             inventory8.setDescription("Asian salad");
             inventory8.setNum_available(10);
             inventory8.setPrice(10.99);
-            inventory8.setPrice(10.99);
             inventory8.setPickup_start(Time.valueOf("22:00:00"));
             inventory8.setPickup_end(Time.valueOf("00:00:00"));
 
@@ -184,7 +218,6 @@ public class LastMealGreatDealController {
 
             inventory7.setDescription("Taco burger");
             inventory7.setNum_available(10);
-            inventory7.setPrice(10.99);
             inventory7.setPrice(10.99);
             inventory7.setPickup_start(Time.valueOf("22:00:00"));
             inventory7.setPickup_end(Time.valueOf("00:00:00"));
@@ -209,7 +242,6 @@ public class LastMealGreatDealController {
             inventory6.setDescription("grilled beef and broccoli");
             inventory6.setNum_available(10);
             inventory6.setPrice(10.99);
-            inventory6.setPrice(10.99);
             inventory6.setPickup_start(Time.valueOf("22:00:00"));
             inventory6.setPickup_end(Time.valueOf("00:00:00"));
 
@@ -233,7 +265,6 @@ public class LastMealGreatDealController {
             inventory5.setDescription("sesame chicken");
             inventory5.setNum_available(10);
             inventory5.setPrice(10.99);
-            inventory5.setPrice(10.99);
             inventory5.setPickup_start(Time.valueOf("22:00:00"));
             inventory5.setPickup_end(Time.valueOf("00:00:00"));
 
@@ -256,8 +287,7 @@ public class LastMealGreatDealController {
 
             inventory4.setDescription("steak and eggs");
             inventory4.setNum_available(10);
-            inventory4.setPrice(10.99);
-            inventory4.setPrice(10.99);
+            inventory4.setPrice(1.50);
             inventory4.setPickup_start(Time.valueOf("22:00:00"));
             inventory4.setPickup_end(Time.valueOf("00:00:00"));
 
@@ -280,8 +310,7 @@ public class LastMealGreatDealController {
 
             inventory3.setDescription("Fish and chips");
             inventory3.setNum_available(10);
-            inventory3.setPrice(10.99);
-            inventory3.setPrice(10.99);
+            inventory3.setPrice(4.75);
             inventory3.setPickup_start(Time.valueOf("22:00:00"));
             inventory3.setPickup_end(Time.valueOf("00:00:00"));
             inventory3.setPickup_end(Time.valueOf("00:00:00"));
@@ -305,8 +334,7 @@ public class LastMealGreatDealController {
 
             inventory2.setDescription("taco salad");
             inventory2.setNum_available(10);
-            inventory2.setPrice(10.99);
-            inventory2.setPrice(10.99);
+            inventory2.setPrice(3.50);
             inventory2.setPickup_start(Time.valueOf("22:00:00"));
             inventory2.setPickup_end(Time.valueOf("00:00:00"));
 
@@ -329,8 +357,7 @@ public class LastMealGreatDealController {
 
             inventory1.setDescription("kale burger");
             inventory1.setNum_available(10);
-            inventory1.setPrice(10.99);
-            inventory1.setPrice(10.99);
+            inventory1.setPrice(2.99);
             inventory1.setPickup_start(Time.valueOf("22:00:00"));
             inventory1.setPickup_end(Time.valueOf("00:00:00"));
 
@@ -389,13 +416,13 @@ public class LastMealGreatDealController {
         }
     }
 
-    @CrossOrigin
-    @GetMapping("details")
-    public Restaurant getRestaurantDetails (HttpSession session) {
-        if (session.getAttribute("current_restaurant_user") != null) {
-
-        }
-    }
+//    @CrossOrigin
+//    @GetMapping("/details")
+//    public Restaurant getRestaurantDetails (HttpSession session) {
+//        if (session.getAttribute("current_restaurant_user") != null) {
+//
+//        }
+//    }
 
     @CrossOrigin
     @GetMapping("/inventory")
