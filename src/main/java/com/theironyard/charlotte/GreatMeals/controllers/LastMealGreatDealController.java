@@ -500,6 +500,15 @@ public class LastMealGreatDealController {
     }
 
 
+    //added a post mapping in order for new restaurant owners to submit their info
+
+    @CrossOrigin
+    @PostMapping("/new-restaurant")
+    public void addRestaurant(@RequestBody Restaurant restaurant) {
+        restaurantRepo.save(restaurant);
+    }
+
+
 //TODO: EXTRAS with SORT and SEARCH
 //    @CrossOrigin
 //    @GetMapping("/inventory")
