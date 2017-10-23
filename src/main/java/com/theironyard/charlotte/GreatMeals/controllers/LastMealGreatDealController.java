@@ -390,6 +390,14 @@ public class LastMealGreatDealController {
     }
 
     @CrossOrigin
+    @GetMapping("details")
+    public Restaurant getRestaurantDetails (HttpSession session) {
+        if (session.getAttribute("current_restaurant_user") != null) {
+
+        }
+    }
+
+    @CrossOrigin
     @GetMapping("/inventory")
     public List<Inventory> getInventory (HttpSession session) {
         if (session.getAttribute("current_restaurant_user") != null) {
