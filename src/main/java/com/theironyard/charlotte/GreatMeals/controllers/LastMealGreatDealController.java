@@ -224,6 +224,8 @@ public class LastMealGreatDealController {
             inventory8.setRestaurant(restaurant3);
             inventoryRepo.save(inventory8);
             restaurantRepo.save(restaurant3);
+
+
             List<Inventory> list4 = new ArrayList<>();
             list4.add(inventory7);
 
