@@ -565,7 +565,7 @@ public class LastMealGreatDealController {
     // /restaurants?lat=<blah>&lng=<blah>
     public List<Restaurant> getAllRestaurants(
             @RequestParam(value = "lat") double lat,
-            @RequestParam(value = "lng") double lng,
+            @RequestParam(value = "lng") double lng
 //            HttpSession session
     ) {
 
