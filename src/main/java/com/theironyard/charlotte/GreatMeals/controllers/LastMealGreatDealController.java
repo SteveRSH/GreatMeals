@@ -614,30 +614,61 @@ public class LastMealGreatDealController {
                 }
             }
 
-            //this is to update our cart in session. if you look above, we never set cart to session IF the
-            //cart already exists.
-            session.setAttribute("cart", cart);
-            System.out.println(cart);
-            return cart;
+        //this is to update our cart in session. if you look above, we never set cart to session IF the
+        //cart already exists.
+        session.setAttribute("cart", cart);
+        return cart;
+    }
+
+    @CrossOrigin
+    @GetMapping("/cart")
+    public List<Inventory> getAllStuffInCart(HttpSession session) {
+        if (session.getAttribute("current_customer_user") != null) {
+            List<Inventory> cart = (List<Inventory>) session.getAttribute("cart");
+            if (cart != null) {
+                return cart;
+            }
         }
         return null;
     }
 
-    @CrossOrigin
-    @GetMapping("/pay")
-    public void payForFood() {
-        //return all restaurants in area
-    }
 
-//TODO: For the confirmation page (the one that comes immediately after they make a
-//TODO: purchase) -- we need to think through whether we really need a separate
-//TODO: endpoint for this.  What we can do is, create an application response
-//TODO: (to the purchase endpoint) as a JSON object that they can display on their page.
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void confirmation() {
-//        //return all restaurants in area
-//    }
+    @CrossOrigin
+    @PostMapping("/pay")
+    public Transaction payForFood(
+            //Front end shouldn't have to pass anything for this to work? As long as total bill is more than $0.
+            Transaction transaction,
+            HttpSession session) {
+        if (session.getAttribute("current_customer_user") != null) {
+
+            //Assign the session's cart to a variable that we can process
+            List<Inventory> cart = (List<Inventory>) session.getAttribute("cart");
+            double totalBill = 0;
+
+            //For all items in the session cart, add price* quantity to the total bill
+            for (Inventory cartItems : cart) {
+                totalBill += (cartItems.getPrice()*cartItems.getNum_available());
+            }
+
+            if (transaction.processCard(totalBill)) {
+                for (Inventory stuffInCart : cart) {
+                    Inventory tempObject = inventoryRepo.findOne(stuffInCart.getId());
+
+                    //set the num_available for object in database to ... whats left
+                    tempObject.setNum_available(tempObject.getNum_available()-stuffInCart.getNum_available());
+                    inventoryRepo.save(tempObject);
+                }
+
+                //set transaction details to session owner (user) and to restaurant
+                transaction.setUser(userRepo.findOne((Integer) session.getAttribute("current_customer_user")));
+                transaction.setRestaurant(restaurantRepo.findOne(cart.get(0).getRestaurant().getId()));
+                transaction.setTotal(totalBill);
+                transactionRepo.save(transaction);
+                return transaction;
+            }
+        }
+        return null;
+    }
 
 
 //TODO: EXTRAS with SORT and SEARCH

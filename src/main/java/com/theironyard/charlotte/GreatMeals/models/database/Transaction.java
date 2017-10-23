@@ -48,6 +48,12 @@ public class Transaction {
     @Column(name = "created_at")
     private Date created_at;
 
+    //This is a dummy method that will always return true when we process a credit card... Will have to change
+    //obviously once we actually process cards.
+    public boolean processCard(double totalBill) {
+        if (totalBill >= 0) { return true; }
+        return false;
+    }
 
     public int getId() {
         return id;
