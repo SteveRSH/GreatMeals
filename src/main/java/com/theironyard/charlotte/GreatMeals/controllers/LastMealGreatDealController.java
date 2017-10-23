@@ -620,18 +620,16 @@ public class LastMealGreatDealController {
         return cart;
     }
 
+    //TODO: Tested on Postman and it hangs... Not sure why not returning either empty or full cart. Ask Ben.
     @CrossOrigin
     @GetMapping("/cart")
     public List<Inventory> getAllStuffInCart(HttpSession session) {
+        List<Inventory> cart = new ArrayList<Inventory>();
         if (session.getAttribute("current_customer_user") != null) {
-            List<Inventory> cart = (List<Inventory>) session.getAttribute("cart");
-            if (cart != null) {
-                return cart;
-            }
+             cart = (List<Inventory>) session.getAttribute("cart");
         }
-        return null;
+        return cart;
     }
-
 
     @CrossOrigin
     @PostMapping("/pay")
@@ -640,6 +638,7 @@ public class LastMealGreatDealController {
             Transaction transaction,
             HttpSession session) {
         if (session.getAttribute("current_customer_user") != null) {
+            System.out.println("Hi im here");
 
             //Assign the session's cart to a variable that we can process
             List<Inventory> cart = (List<Inventory>) session.getAttribute("cart");
@@ -647,11 +646,14 @@ public class LastMealGreatDealController {
 
             //For all items in the session cart, add price* quantity to the total bill
             for (Inventory cartItems : cart) {
+                System.out.println("I've got money. Honey. ");
                 totalBill += (cartItems.getPrice()*cartItems.getNum_available());
             }
 
             if (transaction.processCard(totalBill)) {
+                System.out.println("CC ind a house");
                 for (Inventory stuffInCart : cart) {
+                    System.out.println("hi");
                     Inventory tempObject = inventoryRepo.findOne(stuffInCart.getId());
 
                     //set the num_available for object in database to ... whats left
@@ -661,9 +663,18 @@ public class LastMealGreatDealController {
 
                 //set transaction details to session owner (user) and to restaurant
                 transaction.setUser(userRepo.findOne((Integer) session.getAttribute("current_customer_user")));
-                transaction.setRestaurant(restaurantRepo.findOne(cart.get(0).getRestaurant().getId()));
+
+                int tempId = cart.get(0).getId();
+                Inventory tempInventory = inventoryRepo.findOne(tempId);
+                Restaurant restaurant = tempInventory.getRestaurant();
+                transaction.setRestaurant(restaurant);
                 transaction.setTotal(totalBill);
+
+                //TODO: This is having trouble serializing the java object into JSON and I'm too sleepy to
+                //TODO: figure out why. Ask Ben
                 transactionRepo.save(transaction);
+                session.removeAttribute("cart");
+
                 return transaction;
             }
         }
