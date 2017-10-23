@@ -373,8 +373,8 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @PostMapping("/restaurant-signin")
     public void restaurantSignIn(
-            @RequestBody String username,
-            @RequestBody String password,
+            @RequestParam String username,
+            @RequestParam String password,
             HttpSession session) {
         Restaurant user = restaurantRepo
                 .findFirstByUsernameAndPassword(username, password);
@@ -522,12 +522,14 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @PostMapping("/customer-signin")
     public void customerSignIn(
-            @RequestBody String username,
-            @RequestBody String password,
+            //TODO: Possibly change this to parse JSON instead of form input, same with restaurant
+            @RequestParam String username,
+            @RequestParam String password,
             HttpSession session) {
         User user = userRepo
                 .findFirstByUsernameAndPassword(username, password);
-        System.out.println(user);
+        System.out.println(username);
+        System.out.println(password);
         if (user != null) {
             session.setAttribute("current_customer_user", user.getId());
             System.out.println("poo");
@@ -580,15 +582,6 @@ public class LastMealGreatDealController {
         return null;
     }
 
-
-// store a list of inventory in session
-    //get inventory object from database, set it to new inventory instance
-    //change amount to the quntity in cart
-    //add to list
-    //make sure to add check that you cannot add more to cart than available
-
-
-
     @CrossOrigin
     @PostMapping("/cart")
     public List<Inventory> addToCart(
@@ -597,8 +590,7 @@ public class LastMealGreatDealController {
             HttpSession session) {
 
         List<Inventory> cart = new ArrayList<Inventory>();
-
-        if (session.getAttribute("current_restaurant_user") != null) {
+        if (session.getAttribute("current_customer_user") != null) {
 
             //if the session doesnt have a cart already, add a cart.
             if (session.getAttribute("cart") == null) {
@@ -610,20 +602,22 @@ public class LastMealGreatDealController {
             cart = (List<Inventory>) session.getAttribute("cart");
 
             Inventory item = inventoryRepo.findOne(inventoryId);
-            if (quantity <= item.getNum_available()) {
-
+            if (quantity <= item.getNum_available() && quantity > 0) {
                 //we're using num_available to represent the quantity in the cart.
                 item.setNum_available(quantity);
                 cart.add(item);
+            } else if (quantity == 0) {
+                cart.remove(item);
             } else {
-
-                //if I want 8 hotdogs and I only have 6, it will give me 6 -- the max amount available.
-                cart.add(item);
+                    //if I want 8 hotdogs and I only have 6, it will give me 6 -- the max amount available.
+                    cart.add(item);
+                }
             }
 
             //this is to update our cart in session. if you look above, we never set cart to session IF the
             //cart already exists.
             session.setAttribute("cart", cart);
+            System.out.println(cart);
             return cart;
         }
         return null;
