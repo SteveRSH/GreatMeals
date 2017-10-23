@@ -359,6 +359,15 @@ public class LastMealGreatDealController {
     }
     //*************************************************//
 
+    //This is a general method for both customer and restaurant side signout.
+    @CrossOrigin
+    @PostMapping("/signout")
+    public void signout(HttpSession session) {
+
+        //session.invalidate() is how you "destroy" sessions in Spring
+        if(session != null) { session.invalidate(); }
+    }
+
     //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
     @CrossOrigin
@@ -373,15 +382,6 @@ public class LastMealGreatDealController {
         if (user != null) {
             session.setAttribute("current_restaurant_user", user.getId());
         }
-    }
-
-
-    @CrossOrigin
-    @PostMapping("/signout")
-    public void restaurantSignout(HttpSession session) {
-
-        //session.invalidate() is how you "destroy" sessions in Spring
-        if(session != null) { session.invalidate(); }
     }
 
     @CrossOrigin
@@ -403,7 +403,6 @@ public class LastMealGreatDealController {
                 if (thing.getNum_available() == 0) {
                     i.remove();
                 }
-
             }
             return listOfThings;
         }
@@ -439,7 +438,7 @@ public class LastMealGreatDealController {
     public void deleteFromInventory(
             @PathVariable ("inventoryId") int inventoryId,
             HttpSession session) {
-        
+
         //Set availability to 0 instead of deleting from DB because of 1) key constraints 2) you're not supposed
         //to be deleting things from the database anyway :) The GET all inventory method will return only items with
         //availability > 0.
@@ -521,16 +520,36 @@ public class LastMealGreatDealController {
     //********* CUSTOMER-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
     @CrossOrigin
-    //Changed this to /restaurant because /restaurants was breaking the one below
-    @GetMapping("/restaurant/{restaurant_id}")
-    public Restaurant getRestaurantDetails(
-            @PathVariable("restaurant_id") int restaurant_id) {
-
-        Restaurant restaurant = restaurantRepo.findOne(restaurant_id);
-
-        return restaurant;
+    @PostMapping("/customer-signin")
+    public void customerSignIn(
+            @RequestBody String username,
+            @RequestBody String password,
+            HttpSession session) {
+        User user = userRepo
+                .findFirstByUsernameAndPassword(username, password);
+        System.out.println(user);
+        if (user != null) {
+            session.setAttribute("current_customer_user", user.getId());
+            System.out.println("poo");
+        }
     }
 
+    @CrossOrigin
+    @GetMapping("/restaurant/{restaurant_id}")
+    public Restaurant getRestaurantDetails(
+            @PathVariable("restaurant_id") int restaurant_id,
+            HttpSession session) {
+        //TODO: Sooooo this will return the restaurant's username and password as well. We need to figure out how to
+        //TODO: not do that... but not important for minimum viable product.
+        if (session.getAttribute("current_customer_user") != null) {
+
+            Restaurant restaurant = restaurantRepo.findOne(restaurant_id);
+            return restaurant;
+        }
+        return null;
+    }
+
+    //To search for all restaurants within certain distance of the user, use pythagorean theorem.
     public double distanceBetweenCoords(double lat1, double lng1, double lat2, double lng2) {
         double a = lat1 - lat2;
         double b = lng1 - lng2;
@@ -541,33 +560,80 @@ public class LastMealGreatDealController {
 
     @CrossOrigin
     @GetMapping("/restaurants")
+    // /restaurants?lat=<blah>&lng=<blah>
     public List<Restaurant> getAllRestaurants(
             @RequestParam(value = "lat") double lat,
-            @RequestParam(value = "lng") double lng) {
-            // /restaurants?lat=<blah>&lng=<blah>
+            @RequestParam(value = "lng") double lng,
+            HttpSession session) {
+
+        //TODO: verify math works
         final double radius = .5;
 
-        List<Restaurant> allRestaurantsInArea = (List<Restaurant>)restaurantRepo.findAll();
+        if (session.getAttribute("current_customer_user") != null) {
+            List<Restaurant> allRestaurantsInArea = (List<Restaurant>) restaurantRepo.findAll();
 
-        return allRestaurantsInArea
-                .stream()
-               .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
-                .collect(Collectors.toList());
+            return allRestaurantsInArea
+                    .stream()
+                    .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 
 
-//TODO: I think we have to create a new database and separate controller for carts.
-//TODO: We will need to do research on this. Discuss with Ben.
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void addToCart() {
-//        //return all restaurants in area
-//    }
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void payForFood() {
-//        //return all restaurants in area
-//    }
+// store a list of inventory in session
+    //get inventory object from database, set it to new inventory instance
+    //change amount to the quntity in cart
+    //add to list
+    //make sure to add check that you cannot add more to cart than available
+
+
+
+    @CrossOrigin
+    @PostMapping("/cart")
+    public List<Inventory> addToCart(
+            @RequestParam(value = "inventoryId") int inventoryId,
+            @RequestParam(value = "quantity") int quantity,
+            HttpSession session) {
+
+        List<Inventory> cart = new ArrayList<Inventory>();
+
+        if (session.getAttribute("current_restaurant_user") != null) {
+
+            //if the session doesnt have a cart already, add a cart.
+            if (session.getAttribute("cart") == null) {
+                session.setAttribute("cart", cart);
+            }
+
+            //if we don't explicitly set cart to the session, inventory items will be saved to the list "cart" but
+            //not the session.
+            cart = (List<Inventory>) session.getAttribute("cart");
+
+            Inventory item = inventoryRepo.findOne(inventoryId);
+            if (quantity <= item.getNum_available()) {
+
+                //we're using num_available to represent the quantity in the cart.
+                item.setNum_available(quantity);
+                cart.add(item);
+            } else {
+
+                //if I want 8 hotdogs and I only have 6, it will give me 6 -- the max amount available.
+                cart.add(item);
+            }
+
+            //this is to update our cart in session. if you look above, we never set cart to session IF the
+            //cart already exists.
+            session.setAttribute("cart", cart);
+            return cart;
+        }
+        return null;
+    }
+
+    @CrossOrigin
+    @GetMapping("/pay")
+    public void payForFood() {
+        //return all restaurants in area
+    }
 
 //TODO: For the confirmation page (the one that comes immediately after they make a
 //TODO: purchase) -- we need to think through whether we really need a separate
