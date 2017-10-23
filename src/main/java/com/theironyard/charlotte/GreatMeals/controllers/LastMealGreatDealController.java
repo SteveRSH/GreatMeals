@@ -35,6 +35,8 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @GetMapping("/")
     public void renderHomePage() {
+
+        //********* CREATING DUMMY DATABASE ITEMS *******//
         Transaction transaction1 = new Transaction();
         transaction1.setTotal(132.50);
         Transaction transaction2 = new Transaction();
@@ -74,6 +76,7 @@ public class LastMealGreatDealController {
                 restaurantExists9 == null &&
                 restaurantExists10 == null) {
 
+            //Instantiating new restaurants...
             Restaurant restaurant1 = new Restaurant();
             Restaurant restaurant2 = new Restaurant();
             Restaurant restaurant3 = new Restaurant();
@@ -86,7 +89,7 @@ public class LastMealGreatDealController {
             Restaurant restaurant10 = new Restaurant();
 
 
-//Create inventory items
+            //Instantiating new inventory items...
             Inventory inventory1 = new Inventory();
             Inventory inventory2 = new Inventory();
             Inventory inventory3 = new Inventory();
@@ -98,10 +101,9 @@ public class LastMealGreatDealController {
             Inventory inventory9 = new Inventory();
             Inventory inventory10 = new Inventory();
 
-
-            //This is for the inventory instantiation
             List<Inventory> list = Arrays.asList(inventory10);
 
+            //Setting all the values...
             inventory10.setDescription("Almond batter nuggets");
             inventory10.setNum_available(10);
             inventory10.setPrice(10.99);
@@ -122,12 +124,12 @@ public class LastMealGreatDealController {
             restaurant1.setRating(4.5);
             restaurant1.setInventory(list);
 
-
+            //Note on weird ordering: had to do it this way to get them all saved to the database.
             inventory10.setRestaurant(restaurant1);
-
             restaurantRepo.save(restaurant1);
 
-
+            //I create a new list for every inventory instance. Then I change the value of list so that it points to
+            //different objects in memory.
             list = Arrays.asList(inventory9);
 
             inventory9.setDescription("Grilled cheese sandwich");
@@ -151,19 +153,15 @@ public class LastMealGreatDealController {
             restaurant2.setInventory(list);
 
             inventory9.setRestaurant(restaurant2);
-
             restaurantRepo.save(restaurant2);
-
-
-
             list = Arrays.asList(inventory8);
+
             inventory8.setDescription("Asian salad");
             inventory8.setNum_available(10);
             inventory8.setPrice(10.99);
             inventory8.setPrice(10.99);
             inventory8.setPickup_start(Time.valueOf("22:00:00"));
             inventory8.setPickup_end(Time.valueOf("00:00:00"));
-
 
             restaurant3.setYelp_id("roosters-uptown-charlotte-5");
             restaurant3.setUsername("hi@roosters.com");
@@ -177,10 +175,9 @@ public class LastMealGreatDealController {
             restaurant3.setPrice("$$");
             restaurant3.setRating(4.0);
             restaurant3.setInventory(list);
+
             inventory8.setRestaurant(restaurant3);
             restaurantRepo.save(restaurant3);
-
-
             list = Arrays.asList(inventory7);
 
             inventory7.setDescription("Taco burger");
@@ -189,7 +186,6 @@ public class LastMealGreatDealController {
             inventory7.setPrice(10.99);
             inventory7.setPickup_start(Time.valueOf("22:00:00"));
             inventory7.setPickup_end(Time.valueOf("00:00:00"));
-
 
             restaurant4.setYelp_id("the-kings-kitchen-charlotte");
             restaurant4.setUsername("hi@kingskitchen.com");
@@ -205,9 +201,7 @@ public class LastMealGreatDealController {
             restaurant4.setInventory(list);
 
             inventory7.setRestaurant(restaurant4);
-
             restaurantRepo.save(restaurant4);
-
             list = Arrays.asList(inventory6);
 
             inventory6.setDescription("grilled beef and broccoli");
@@ -231,9 +225,7 @@ public class LastMealGreatDealController {
             restaurant5.setInventory(list);
 
             inventory6.setRestaurant(restaurant5);
-
             restaurantRepo.save(restaurant5);
-
             list = Arrays.asList(inventory5);
 
             inventory5.setDescription("sesame chicken");
@@ -257,14 +249,8 @@ public class LastMealGreatDealController {
             restaurant6.setInventory(list);
 
             inventory5.setRestaurant(restaurant6);
-
             restaurantRepo.save(restaurant6);
-
-
-
-
             list = Arrays.asList(inventory4);
-
 
             inventory4.setDescription("steak and eggs");
             inventory4.setNum_available(10);
@@ -287,12 +273,7 @@ public class LastMealGreatDealController {
             restaurant7.setInventory(list);
 
             inventory4.setRestaurant(restaurant7);
-
             restaurantRepo.save(restaurant7);
-
-
-
-
             list = Arrays.asList(inventory3);
 
             inventory3.setDescription("Fish and chips");
@@ -317,11 +298,7 @@ public class LastMealGreatDealController {
             restaurant8.setInventory(list);
 
             inventory3.setRestaurant(restaurant8);
-
             restaurantRepo.save(restaurant8);
-
-
-
             list = Arrays.asList(inventory2);
 
             inventory2.setDescription("taco salad");
@@ -345,11 +322,7 @@ public class LastMealGreatDealController {
             restaurant9.setInventory(list);
 
             inventory2.setRestaurant(restaurant9);
-
             restaurantRepo.save(restaurant9);
-
-
-
             list = Arrays.asList(inventory1);
 
             inventory1.setDescription("kale burger");
@@ -373,10 +346,7 @@ public class LastMealGreatDealController {
             restaurant10.setInventory(list);
 
             inventory1.setRestaurant(restaurant10);
-
             restaurantRepo.save(restaurant10);
-
-
 
             transaction1.setRestaurant(restaurant1);
             transaction2.setRestaurant(restaurant2);
@@ -387,15 +357,9 @@ public class LastMealGreatDealController {
             transactionRepo.save(transaction2);
         }
     }
+    //*************************************************//
 
-//        Inventory inventoryExists = inventoryRepo.findFirstByRestaurant(restaurant);
-
-
-
-
-
-
-    //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//\
+    //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
     @CrossOrigin
     @PostMapping("/restaurant-signin")
@@ -415,6 +379,8 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @PostMapping("/signout")
     public void restaurantSignout(HttpSession session) {
+
+        //session.invalidate() is how you "destroy" sessions in Spring
         if(session != null) { session.invalidate(); }
     }
 
@@ -423,9 +389,14 @@ public class LastMealGreatDealController {
     public List<Inventory> getInventory (HttpSession session) {
         if (session.getAttribute("current_restaurant_user") != null) {
             int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+
+            //Find the specific restaurant, create a list of that restaurant's inventory
             Restaurant restaurant = restaurantRepo.findOne(rest_id);
             List<Inventory> listOfThings = restaurant.getInventory();
 
+            //This is just another way to iterate through a list of things
+            //Basically, while there is still items on the list,
+            //if the num_available is == 0, then remove it from the list. Return the list.
             Iterator<Inventory> i = listOfThings.iterator();
             while (i.hasNext()) {
                 Inventory thing = i.next(); // must be called before you can call i.remove()
@@ -446,6 +417,8 @@ public class LastMealGreatDealController {
             HttpSession session,
             @RequestBody Inventory item) {
         if (session.getAttribute("current_restaurant_user") != null) {
+
+            //the sessionAttribute returns an Object; we need to explicitly set it to an Integer in order to use it.
             int rest_id = (Integer) session.getAttribute("current_restaurant_user");
             Restaurant restaurant = restaurantRepo.findOne(rest_id);
 
@@ -459,15 +432,17 @@ public class LastMealGreatDealController {
         }
     }
 
-    //Michelle: I set availability to 0 instead of deleting from DB because of 1) key constraints 2) you're not supposed
-    //to be deleting things from the database anyway :) The GET all inventory method will return only items with
-    //availability > 0.
+
 
     @CrossOrigin
     @DeleteMapping("/inventory/{inventoryId}")
     public void deleteFromInventory(
             @PathVariable ("inventoryId") int inventoryId,
             HttpSession session) {
+        
+        //Set availability to 0 instead of deleting from DB because of 1) key constraints 2) you're not supposed
+        //to be deleting things from the database anyway :) The GET all inventory method will return only items with
+        //availability > 0.
         if (session.getAttribute("current_restaurant_user") != null) {
             Inventory thing = inventoryRepo.findOne(inventoryId);
             Restaurant restaurant = thing.getRestaurant();
