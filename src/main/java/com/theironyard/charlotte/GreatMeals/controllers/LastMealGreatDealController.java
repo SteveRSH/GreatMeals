@@ -416,13 +416,17 @@ public class LastMealGreatDealController {
         }
     }
 
-//    @CrossOrigin
-//    @GetMapping("/details")
-//    public Restaurant getRestaurantDetails (HttpSession session) {
-//        if (session.getAttribute("current_restaurant_user") != null) {
-//
-//        }
-//    }
+    @CrossOrigin
+    @GetMapping("/details")
+    public Restaurant getRestaurantDetails (HttpSession session) {
+        if (session.getAttribute("current_restaurant_user") != null) {
+            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+
+            Restaurant restaurant = restaurantRepo.findOne(rest_id);
+            return restaurant;
+        }
+        return null;
+    }
 
     @CrossOrigin
     @GetMapping("/inventory")

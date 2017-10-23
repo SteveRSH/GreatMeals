@@ -68,26 +68,6 @@ public class YelpService {
             System.out.println(e.getResponseBodyAsString());
             throw e;
         }
-
-
-        /**
-         r.setYelp_id(business.getId());
-         r.setUsername(business.getId());
-         r.setPassword(String.valueOf(Math.random() * 10000));
-         r.setCreated_at(Date.from(Instant.now()));
-         r.setDisplay_address(business.getLocation().getDisplay_address().stream().reduce("", (a, b) -> a + b));
-         r.setDisplay_phone(business.getDisplay_phone());
-         r.setLatitude(business.getCoordinates().getLatitude());
-         r.setLongitude(business.getCoordinates().getLongitude());
-         r.setImage_url(business.getImage_url());
-         r.setName(business.getName());
-         r.setPrice(business.getPrice());
-         r.setRating((int)business.getRating());
-
-
-         */
-
-//        return r;
     }
 }
 
