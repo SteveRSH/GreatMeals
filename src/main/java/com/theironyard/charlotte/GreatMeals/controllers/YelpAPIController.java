@@ -1,6 +1,7 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
 
+import com.theironyard.charlotte.GreatMeals.models.database.Restaurant;
 import com.theironyard.charlotte.GreatMeals.models.yelp.Business;
 
 import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
@@ -41,6 +42,11 @@ public class YelpAPIController {
 
         return response;
 
+    }
+
+    @GetMapping("/singlebusiness/{yelpId}")
+    public Restaurant getBusiness(@PathVariable String yelpId) {
+        return YelpService.getSingleBusinessAsRestaurant("georges-brasserie-charlotte");
     }
 
     @GetMapping("/restaurantsmeals/{id}")
