@@ -1,27 +1,19 @@
 package com.theironyard.charlotte.GreatMeals.controllers;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import com.theironyard.charlotte.GreatMeals.models.database.Inventory;
 import com.theironyard.charlotte.GreatMeals.models.database.Restaurant;
 import com.theironyard.charlotte.GreatMeals.models.database.Transaction;
 import com.theironyard.charlotte.GreatMeals.models.database.User;
-import com.theironyard.charlotte.GreatMeals.models.yelp.Business;
 import com.theironyard.charlotte.GreatMeals.repository.InventoryRepository;
 import com.theironyard.charlotte.GreatMeals.repository.RestaurantRepository;
 import com.theironyard.charlotte.GreatMeals.repository.TransactionRepository;
 import com.theironyard.charlotte.GreatMeals.repository.UserRepository;
-import com.theironyard.charlotte.GreatMeals.services.YelpService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
 import java.sql.Time;
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,178 +35,24 @@ public class LastMealGreatDealController {
     @CrossOrigin
     @GetMapping("/")
     public void renderHomePage() {
-        Set<Transaction> tranSet = new HashSet<>();
+
+        //********* CREATING DUMMY DATABASE ITEMS *******//
         Transaction transaction1 = new Transaction();
         transaction1.setTotal(132.50);
         Transaction transaction2 = new Transaction();
         transaction2.setTotal(100.50);
 
-        tranSet.add(transaction1);
-        tranSet.add(transaction2);
+        transactionRepo.save(transaction1);
+        transactionRepo.save(transaction2);
 
-        User user = new User();
         User userExists = userRepo.findFirstByUsername("test@test.com");
+        User user = new User();
 
         if (userExists == null) {
             user.setUsername("test@test.com");
             user.setPassword("test");
             userRepo.save(user);
         }
-
-//        Restaurant restaurantExists1 = restaurantRepo.findFirstByUsername("lempira-restaurant@lempira.com");
-//        Restaurant restaurantExists2 = restaurantRepo.findFirstByUsername("catrachos@catrachos.com");
-//        Restaurant restaurantExists3 = restaurantRepo.findFirstByUsername("georges@georges.com");
-//        Restaurant restaurantExists4 = restaurantRepo.findFirstByUsername("salad-chick@salad-chick.com");
-//        Restaurant restaurantExists5 = restaurantRepo.findFirstByUsername("pollo-campero@campero.com");
-//        Restaurant restaurantExists6 = restaurantRepo.findFirstByUsername("rosies-kitchen@rosies.com");
-//        Restaurant restaurantExists7 = restaurantRepo.findFirstByUsername("mr-pollo@pollo.com");
-//        Restaurant restaurantExists8 = restaurantRepo.findFirstByUsername("roasting-co@roasting.com");
-//        Restaurant restaurantExists9 = restaurantRepo.findFirstByUsername("asalad-chick@asalad-chick.com");
-//        Restaurant restaurantExists10 = restaurantRepo.findFirstByUsername("johnnys-farmhouse@farmhouse.com");
-//        Restaurant restaurantExists11 = restaurantRepo.findFirstByUsername("mr-cs@mcs.com");
-//        Restaurant restaurantExists12 = restaurantRepo.findFirstByUsername("chicken-bucket@bucket.com");
-//        Restaurant restaurantExists13 = restaurantRepo.findFirstByUsername("el-mariachi@mariachi.com");
-//        Restaurant restaurantExists14 = restaurantRepo.findFirstByUsername("dragon-buffett@dragonbuffett.com");
-//        Restaurant restaurantExists15 = restaurantRepo.findFirstByUsername("antojitos-catrachos@antojitoscatrachos.com");
-//
-//
-//
-//        if (restaurantExists1 == null &&
-//                restaurantExists2 == null &&
-//                restaurantExists3 == null &&
-//                restaurantExists4 == null &&
-//                restaurantExists5 == null &&
-//                restaurantExists6 == null &&
-//                restaurantExists7 == null &&
-//                restaurantExists8 == null &&
-//                restaurantExists9 == null &&
-//                restaurantExists10 == null &&
-//                restaurantExists11 == null &&
-//                restaurantExists12 == null &&
-//                restaurantExists13 == null &&
-//                restaurantExists14 == null &&
-//                restaurantExists15 == null) {
-//            Restaurant restaurant1 = new Restaurant();
-//            Restaurant restaurant2 = new Restaurant();
-//            Restaurant restaurant3 = new Restaurant();
-//            Restaurant restaurant4 = new Restaurant();
-//            Restaurant restaurant5 = new Restaurant();
-//            Restaurant restaurant6 = new Restaurant();
-//            Restaurant restaurant7 = new Restaurant();
-//            Restaurant restaurant8 = new Restaurant();
-//            Restaurant restaurant9 = new Restaurant();
-//            Restaurant restaurant10 = new Restaurant();
-//            Restaurant restaurant11 = new Restaurant();
-//            Restaurant restaurant12 = new Restaurant();
-//            Restaurant restaurant13 = new Restaurant();
-//            Restaurant restaurant14 = new Restaurant();
-//            Restaurant restaurant15 = new Restaurant();
-//
-//            restaurant1.setYelp_id("lempira-restaurant-charlotte-3");
-//            restaurant1.setUsername("lempira-restaurant@lempira.com");
-//            restaurant1.setPassword("12345");
-//            restaurantRepo.save(restaurant1);
-//
-//
-//            restaurant2.setYelp_id("antojitos-catrachos-charlotte");
-//            restaurant2.setUsername("catrachos@catrachos.com");
-//            restaurant2.setPassword("abcde");
-//            restaurantRepo.save(restaurant2);
-//
-//            restaurant3.setYelp_id("georges-brasserie-charlotte");
-//            restaurant3.setUsername("georges@georges.com");
-//            restaurant3.setPassword("htksit");
-//            restaurantRepo.save(restaurant3);
-//
-//
-//            restaurant4.setYelp_id("chicken-salad-chick-charlotte-3");
-//            restaurant4.setUsername("salad-chick@salad-chick.com");
-//            restaurant4.setPassword("kdowd");
-//            restaurantRepo.save(restaurant4);
-//
-//            restaurant5.setYelp_id("pollo-campero-charlotte");
-//            restaurant5.setUsername("pollo-campero@campero.com");
-//            restaurant5.setPassword("utllld");
-//            restaurantRepo.save(restaurant5);
-//
-//
-//            restaurant6.setYelp_id("rosies-kitchen-charlotte");
-//            restaurant6.setUsername("rosies-kitchen@rosies.com");
-//            restaurant6.setPassword("8392hd");
-//            restaurantRepo.save(restaurant6);
-//
-//            restaurant7.setYelp_id("mr-pollo-fort-mill");
-//            restaurant7.setUsername("mr-pollo@pollo.com");
-//            restaurant7.setPassword("84osjb");
-//            restaurantRepo.save(restaurant7);
-//
-//
-//            restaurant8.setYelp_id("roasting-co-rock-hill");
-//            restaurant8.setUsername("roasting-co@roasting.com");
-//            restaurant8.setPassword("w34fht");
-//            restaurantRepo.save(restaurant8);
-//
-//            restaurant9.setYelp_id("chicken-salad-chick-concord");
-//            restaurant9.setUsername("asalad-chick@asalad-chick.com");
-//            restaurant9.setPassword("u39384");
-//            restaurantRepo.save(restaurant9);
-//
-//            restaurant10.setYelp_id("johnnys-farmhouse-restaurant-concord");
-//            restaurant10.setUsername("johnnys-farmhouse@farmhouse.com");
-//            restaurant10.setPassword("xdiwfjkf");
-//            restaurantRepo.save(restaurant10);
-//
-//
-//            restaurant11.setYelp_id("mr-cs-concord");
-//            restaurant11.setUsername("mr-cs@mcs.com");
-//            restaurant11.setPassword("keiioan");
-//            restaurantRepo.save(restaurant11);
-//
-//            restaurant12.setYelp_id("chicken-bucket-mount-holly");
-//            restaurant12.setUsername("chicken-bucket@bucket.com");
-//            restaurant12.setPassword("hejisid");
-//            restaurantRepo.save(restaurant12);
-//
-//
-//            restaurant13.setYelp_id("el-mariachi-2-charlotte");
-//            restaurant13.setUsername("el-mariachi@mariachi.com");
-//            restaurant13.setPassword("833dii");
-//            restaurantRepo.save(restaurant13);
-//
-//            restaurant14.setYelp_id("dragon-buffett-cornelius");
-//            restaurant14.setUsername("dragon-buffett@dragonbuffett.com");
-//            restaurant14.setPassword("iiisehe");
-//            restaurantRepo.save(restaurant14);
-//
-//
-//            restaurant15.setYelp_id("antojitos-catrachos-charlotte");
-//            restaurant15.setUsername("antojitos-catrachos@antojitoscatrachos.com");
-//            restaurant15.setPassword("ieieidj");
-//            restaurantRepo.save(restaurant15);
-
-        // go get all the businesses from Yelp
-        List<Business> businesses = YelpService.getSearchResults("food restaurants").getBusinesses();
-
-        // for each business, create a restaurant and save it in our
-        // repository
-        businesses.forEach(business -> {
-            Restaurant r = new Restaurant();
-
-            r.setYelp_id(business.getId());
-            r.setUsername(business.getId());
-            r.setPassword(String.valueOf(Math.random() * 10000));
-            r.setCreated_at(Date.from(Instant.now()));
-            r.setDisplay_address(business.getLocation().getDisplay_address().stream().reduce("", (a, b) -> a + b));
-            r.setDisplay_phone(business.getDisplay_phone());
-            r.setLatitude(business.getCoordinates().getLatitude());
-            r.setLongitude(business.getCoordinates().getLongitude());
-            r.setImage_url(business.getImage_url());
-            r.setName(business.getName());
-            r.setPrice(business.getPrice());
-            r.setRating((int) business.getRating());
-
-            restaurantRepo.save(r);
-        });
 
         Restaurant restaurantExists1 = restaurantRepo.findFirstByUsername("hi@duckworths.com");
         Restaurant restaurantExists2 = restaurantRepo.findFirstByUsername("hi@seoul.com");
@@ -238,6 +76,7 @@ public class LastMealGreatDealController {
                 restaurantExists9 == null &&
                 restaurantExists10 == null) {
 
+            //Instantiating new restaurants...
             Restaurant restaurant1 = new Restaurant();
             Restaurant restaurant2 = new Restaurant();
             Restaurant restaurant3 = new Restaurant();
@@ -248,6 +87,29 @@ public class LastMealGreatDealController {
             Restaurant restaurant8 = new Restaurant();
             Restaurant restaurant9 = new Restaurant();
             Restaurant restaurant10 = new Restaurant();
+
+
+            //Instantiating new inventory items...
+            Inventory inventory1 = new Inventory();
+            Inventory inventory2 = new Inventory();
+            Inventory inventory3 = new Inventory();
+            Inventory inventory4 = new Inventory();
+            Inventory inventory5 = new Inventory();
+            Inventory inventory6 = new Inventory();
+            Inventory inventory7 = new Inventory();
+            Inventory inventory8 = new Inventory();
+            Inventory inventory9 = new Inventory();
+            Inventory inventory10 = new Inventory();
+
+            List<Inventory> list = Arrays.asList(inventory10);
+
+            //Setting all the values...
+            inventory10.setDescription("Almond batter nuggets");
+            inventory10.setNum_available(10);
+            inventory10.setPrice(10.99);
+            inventory10.setPrice(10.99);
+            inventory10.setPickup_start(Time.valueOf("22:00:00"));
+            inventory10.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant1.setYelp_id("the-cellar-at-duckworths-charlotte-2");
             restaurant1.setUsername("hi@duckworths.com");
@@ -260,8 +122,22 @@ public class LastMealGreatDealController {
             restaurant1.setName("Cellar at Duckworth's");
             restaurant1.setPrice("$$");
             restaurant1.setRating(4.5);
+            restaurant1.setInventory(list);
+
+            //Note on weird ordering: had to do it this way to get them all saved to the database.
+            inventory10.setRestaurant(restaurant1);
             restaurantRepo.save(restaurant1);
 
+            //I create a new list for every inventory instance. Then I change the value of list so that it points to
+            //different objects in memory.
+            list = Arrays.asList(inventory9);
+
+            inventory9.setDescription("Grilled cheese sandwich");
+            inventory9.setNum_available(10);
+            inventory9.setPrice(10.99);
+            inventory9.setPrice(10.99);
+            inventory9.setPickup_start(Time.valueOf("22:00:00"));
+            inventory9.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant2.setYelp_id("seoul-food-meat-company-charlotte");
             restaurant2.setUsername("hi@seoul.com");
@@ -274,7 +150,18 @@ public class LastMealGreatDealController {
             restaurant2.setName("Seoul Food Meat Company");
             restaurant2.setPrice("$$");
             restaurant2.setRating(4.0);
+            restaurant2.setInventory(list);
+
+            inventory9.setRestaurant(restaurant2);
             restaurantRepo.save(restaurant2);
+            list = Arrays.asList(inventory8);
+
+            inventory8.setDescription("Asian salad");
+            inventory8.setNum_available(10);
+            inventory8.setPrice(10.99);
+            inventory8.setPrice(10.99);
+            inventory8.setPickup_start(Time.valueOf("22:00:00"));
+            inventory8.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant3.setYelp_id("roosters-uptown-charlotte-5");
             restaurant3.setUsername("hi@roosters.com");
@@ -287,8 +174,18 @@ public class LastMealGreatDealController {
             restaurant3.setName("Rooster's Uptown");
             restaurant3.setPrice("$$");
             restaurant3.setRating(4.0);
-            restaurantRepo.save(restaurant3);
+            restaurant3.setInventory(list);
 
+            inventory8.setRestaurant(restaurant3);
+            restaurantRepo.save(restaurant3);
+            list = Arrays.asList(inventory7);
+
+            inventory7.setDescription("Taco burger");
+            inventory7.setNum_available(10);
+            inventory7.setPrice(10.99);
+            inventory7.setPrice(10.99);
+            inventory7.setPickup_start(Time.valueOf("22:00:00"));
+            inventory7.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant4.setYelp_id("the-kings-kitchen-charlotte");
             restaurant4.setUsername("hi@kingskitchen.com");
@@ -301,7 +198,18 @@ public class LastMealGreatDealController {
             restaurant4.setName("The King's Kitchen");
             restaurant4.setPrice("$$");
             restaurant4.setRating(4.0);
+            restaurant4.setInventory(list);
+
+            inventory7.setRestaurant(restaurant4);
             restaurantRepo.save(restaurant4);
+            list = Arrays.asList(inventory6);
+
+            inventory6.setDescription("grilled beef and broccoli");
+            inventory6.setNum_available(10);
+            inventory6.setPrice(10.99);
+            inventory6.setPrice(10.99);
+            inventory6.setPickup_start(Time.valueOf("22:00:00"));
+            inventory6.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant5.setYelp_id("dandelion-market-charlotte");
             restaurant5.setUsername("hi@dandelionmarket.com");
@@ -314,8 +222,18 @@ public class LastMealGreatDealController {
             restaurant5.setName("Dandelion Market");
             restaurant5.setPrice("$$");
             restaurant5.setRating(4.0);
-            restaurantRepo.save(restaurant5);
+            restaurant5.setInventory(list);
 
+            inventory6.setRestaurant(restaurant5);
+            restaurantRepo.save(restaurant5);
+            list = Arrays.asList(inventory5);
+
+            inventory5.setDescription("sesame chicken");
+            inventory5.setNum_available(10);
+            inventory5.setPrice(10.99);
+            inventory5.setPrice(10.99);
+            inventory5.setPickup_start(Time.valueOf("22:00:00"));
+            inventory5.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant6.setYelp_id("murphys-kitchen-and-tap-charlotte-2");
             restaurant6.setUsername("hi@murphys.com");
@@ -328,7 +246,18 @@ public class LastMealGreatDealController {
             restaurant6.setName("Murphy's Kitchen & Tap");
             restaurant6.setPrice("$$");
             restaurant6.setRating(4.5);
+            restaurant6.setInventory(list);
+
+            inventory5.setRestaurant(restaurant6);
             restaurantRepo.save(restaurant6);
+            list = Arrays.asList(inventory4);
+
+            inventory4.setDescription("steak and eggs");
+            inventory4.setNum_available(10);
+            inventory4.setPrice(10.99);
+            inventory4.setPrice(10.99);
+            inventory4.setPickup_start(Time.valueOf("22:00:00"));
+            inventory4.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant7.setYelp_id("stoke-charlotte-2\"");
             restaurant7.setUsername("hi@stoke.com");
@@ -341,8 +270,19 @@ public class LastMealGreatDealController {
             restaurant7.setName("Stoke");
             restaurant7.setPrice("$$");
             restaurant7.setRating(4.0);
-            restaurantRepo.save(restaurant7);
+            restaurant7.setInventory(list);
 
+            inventory4.setRestaurant(restaurant7);
+            restaurantRepo.save(restaurant7);
+            list = Arrays.asList(inventory3);
+
+            inventory3.setDescription("Fish and chips");
+            inventory3.setNum_available(10);
+            inventory3.setPrice(10.99);
+            inventory3.setPrice(10.99);
+            inventory3.setPickup_start(Time.valueOf("22:00:00"));
+            inventory3.setPickup_end(Time.valueOf("00:00:00"));
+            inventory3.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant8.setYelp_id("mimosa-grill-charlotte");
             restaurant8.setUsername("hi@mimosagrill.com");
@@ -355,7 +295,18 @@ public class LastMealGreatDealController {
             restaurant8.setName("Mimosa Grill");
             restaurant8.setPrice("$$");
             restaurant8.setRating(4.0);
+            restaurant8.setInventory(list);
+
+            inventory3.setRestaurant(restaurant8);
             restaurantRepo.save(restaurant8);
+            list = Arrays.asList(inventory2);
+
+            inventory2.setDescription("taco salad");
+            inventory2.setNum_available(10);
+            inventory2.setPrice(10.99);
+            inventory2.setPrice(10.99);
+            inventory2.setPickup_start(Time.valueOf("22:00:00"));
+            inventory2.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant9.setYelp_id("viva-chicken-charlotte");
             restaurant9.setUsername("hi@vivachicken.com");
@@ -368,7 +319,18 @@ public class LastMealGreatDealController {
             restaurant9.setName("Viva Chicken");
             restaurant9.setPrice("$");
             restaurant9.setRating(4.5);
+            restaurant9.setInventory(list);
+
+            inventory2.setRestaurant(restaurant9);
             restaurantRepo.save(restaurant9);
+            list = Arrays.asList(inventory1);
+
+            inventory1.setDescription("kale burger");
+            inventory1.setNum_available(10);
+            inventory1.setPrice(10.99);
+            inventory1.setPrice(10.99);
+            inventory1.setPickup_start(Time.valueOf("22:00:00"));
+            inventory1.setPickup_end(Time.valueOf("00:00:00"));
 
             restaurant10.setYelp_id("alexander-michaels-charlotte");
             restaurant10.setUsername("hi@alexandermichaels.com");
@@ -381,191 +343,143 @@ public class LastMealGreatDealController {
             restaurant10.setName("Alexander Michael's");
             restaurant10.setPrice("$$");
             restaurant10.setRating(4.5);
+            restaurant10.setInventory(list);
+
+            inventory1.setRestaurant(restaurant10);
             restaurantRepo.save(restaurant10);
-
-            Inventory inventory1 = new Inventory();
-            Inventory inventory2 = new Inventory();
-            Inventory inventory3 = new Inventory();
-            Inventory inventory4 = new Inventory();
-            Inventory inventory5 = new Inventory();
-            Inventory inventory6 = new Inventory();
-            Inventory inventory7 = new Inventory();
-            Inventory inventory8 = new Inventory();
-            Inventory inventory9 = new Inventory();
-            Inventory inventory10 = new Inventory();
-
-            inventory1.setRestaurant(restaurant1);
-            inventory1.setDescription("kale burger");
-            inventory1.setNum_available(10);
-            inventory1.setPrice(10.99);
-            inventory1.setPrice(10.99);
-            inventory1.setPickup_start(Time.valueOf("22:00:00"));
-            inventory1.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory1);
-
-            inventory2.setRestaurant(restaurant2);
-            inventory2.setDescription("taco salad");
-            inventory2.setNum_available(10);
-            inventory2.setPrice(10.99);
-            inventory2.setPrice(10.99);
-            inventory2.setPickup_start(Time.valueOf("22:00:00"));
-            inventory2.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory2);
-
-            inventory3.setRestaurant(restaurant3);
-            inventory3.setDescription("Fish and chips");
-            inventory3.setNum_available(10);
-            inventory3.setPrice(10.99);
-            inventory3.setPrice(10.99);
-            inventory3.setPickup_start(Time.valueOf("22:00:00"));
-            inventory3.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory3);
-
-            inventory4.setRestaurant(restaurant4);
-            inventory4.setDescription("steak and eggs");
-            inventory4.setNum_available(10);
-            inventory4.setPrice(10.99);
-            inventory4.setPrice(10.99);
-            inventory4.setPickup_start(Time.valueOf("22:00:00"));
-            inventory4.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory4);
-
-            inventory5.setRestaurant(restaurant5);
-            inventory5.setDescription("sesame chicken");
-            inventory5.setNum_available(10);
-            inventory5.setPrice(10.99);
-            inventory5.setPrice(10.99);
-            inventory5.setPickup_start(Time.valueOf("22:00:00"));
-            inventory5.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory5);
-
-            inventory6.setRestaurant(restaurant6);
-            inventory6.setDescription("grilled beef and broccoli");
-            inventory6.setNum_available(10);
-            inventory6.setPrice(10.99);
-            inventory6.setPrice(10.99);
-            inventory6.setPickup_start(Time.valueOf("22:00:00"));
-            inventory6.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory6);
-
-            inventory7.setRestaurant(restaurant7);
-            inventory7.setDescription("Taco burger");
-            inventory7.setNum_available(10);
-            inventory7.setPrice(10.99);
-            inventory7.setPrice(10.99);
-            inventory7.setPickup_start(Time.valueOf("22:00:00"));
-            inventory7.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory7);
-
-            inventory8.setRestaurant(restaurant8);
-            inventory8.setDescription("Asian salad");
-            inventory8.setNum_available(10);
-            inventory8.setPrice(10.99);
-            inventory8.setPrice(10.99);
-            inventory8.setPickup_start(Time.valueOf("22:00:00"));
-            inventory8.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory8);
-
-            inventory9.setRestaurant(restaurant9);
-            inventory9.setDescription("Grilled cheese sandwich");
-            inventory9.setNum_available(10);
-            inventory9.setPrice(10.99);
-            inventory9.setPrice(10.99);
-            inventory9.setPickup_start(Time.valueOf("22:00:00"));
-            inventory9.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory9);
-
-
-            inventory10.setRestaurant(restaurant10);
-            inventory10.setDescription("Almond batter nuggets");
-            inventory10.setNum_available(10);
-            inventory10.setPrice(10.99);
-            inventory10.setPrice(10.99);
-            inventory10.setPickup_start(Time.valueOf("22:00:00"));
-            inventory10.setPickup_end(Time.valueOf("00:00:00"));
-            inventoryRepo.save(inventory10);
-
 
             transaction1.setRestaurant(restaurant1);
             transaction2.setRestaurant(restaurant2);
             transaction1.setUser(user);
             transaction2.setUser(user);
-            transactionRepo.save(tranSet);
+
+            transactionRepo.save(transaction1);
+            transactionRepo.save(transaction2);
+        }
+    }
+    //*************************************************//
+
+    //This is a general method for both customer and restaurant side signout.
+    @CrossOrigin
+    @PostMapping("/signout")
+    public void signout(HttpSession session) {
+
+        //session.invalidate() is how you "destroy" sessions in Spring
+        if(session != null) { session.invalidate(); }
+    }
+
+    //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//
+
+    @CrossOrigin
+    @PostMapping("/restaurant-signin")
+    public void restaurantSignIn(
+            @RequestParam String username,
+            @RequestParam String password,
+            HttpSession session) {
+        Restaurant user = restaurantRepo
+                .findFirstByUsernameAndPassword(username, password);
+
+        if (user != null) {
+            session.setAttribute("current_restaurant_user", user.getId());
         }
     }
 
-//        Inventory inventoryExists = inventoryRepo.findFirstByRestaurant(restaurant);
-
-
-
-    //********* NON SPECIFIC CONTROLLERS START HERE *******//
-
-//TODO: Sessions -- discuss with Ben
-//    @CrossOrigin
-//    @GetMapping("/signin")
-//    public void restaurantSignIn() {
-
-//
-//    }
-//
-//    @CrossOrigin
-//    @GetMapping("/logout")
-//    public void restaurantLogout() {
-//
-//    }
-
-    //*************************************************//
-
-
-    //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//\
-
     @CrossOrigin
-    @GetMapping("/inventory/{restaurant_id}")
-    public List<Inventory> getAllInventory(
-            @PathVariable("restaurant_id") int restaurant_id) {
+    @GetMapping("/inventory")
+    public List<Inventory> getInventory (HttpSession session) {
+        if (session.getAttribute("current_restaurant_user") != null) {
+            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
 
-        List<Inventory> allInventory = inventoryRepo.findAllByRestaurantId(restaurant_id);
+            //Find the specific restaurant, create a list of that restaurant's inventory
+            Restaurant restaurant = restaurantRepo.findOne(rest_id);
+            List<Inventory> listOfThings = restaurant.getInventory();
 
-        return allInventory;
+            //This is just another way to iterate through a list of things
+            //Basically, while there is still items on the list,
+            //if the num_available is == 0, then remove it from the list. Return the list.
+            Iterator<Inventory> i = listOfThings.iterator();
+            while (i.hasNext()) {
+                Inventory thing = i.next(); // must be called before you can call i.remove()
+                if (thing.getNum_available() == 0) {
+                    i.remove();
+                }
+            }
+            return listOfThings;
+        }
+        return null;
     }
 
 
     @CrossOrigin
-    @PostMapping("/inventory/{restaurant_id}")
+    @PostMapping("/inventory")
     public void addInventory(
-            @PathVariable("restaurant_id") int restaurant_id,
+            HttpSession session,
             @RequestBody Inventory item) {
-        item.setRestaurant(restaurantRepo.findRestaurantById(restaurant_id));
-        inventoryRepo.save(item);
+        if (session.getAttribute("current_restaurant_user") != null) {
+
+            //the sessionAttribute returns an Object; we need to explicitly set it to an Integer in order to use it.
+            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+            Restaurant restaurant = restaurantRepo.findOne(rest_id);
+
+            item.setRestaurant(restaurant);
+            inventoryRepo.save(item);
+
+            List<Inventory> inventory = restaurant.getInventory();
+            inventory.add(item);
+            restaurant.setInventory(inventory);
+            restaurantRepo.save(restaurant);
+        }
     }
 
+
+
     @CrossOrigin
-    @DeleteMapping("/inventory/{itemId}")
+    @DeleteMapping("/inventory/{inventoryId}")
     public void deleteFromInventory(
-            @PathVariable("itemId") int id) {
+            @PathVariable ("inventoryId") int inventoryId,
+            HttpSession session) {
 
-        Inventory item = inventoryRepo.findOne(id);
-        inventoryRepo.delete(item);
+        //Set availability to 0 instead of deleting from DB because of 1) key constraints 2) you're not supposed
+        //to be deleting things from the database anyway :) The GET all inventory method will return only items with
+        //availability > 0.
+        if (session.getAttribute("current_restaurant_user") != null) {
+            Inventory thing = inventoryRepo.findOne(inventoryId);
+            Restaurant restaurant = thing.getRestaurant();
+            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+
+            if (rest_id == restaurant.getId()) {
+                thing.setNum_available(0);
+                inventoryRepo.save(thing);
+            }
+
+        }
     }
 
     @CrossOrigin
-    @PostMapping("/inventory/{itemId}")
+    @PostMapping("/inventory/{inventoryId}")
     public void editInventoryItem(
-            @PathVariable("itemId") int id,
-            @RequestBody Inventory item) {
+            @PathVariable("inventoryId") int inventoryId,
+            HttpSession session) {
+        if (session.getAttribute("current_restaurant_user") != null) {
+            Inventory thing = inventoryRepo.findOne(inventoryId);
+            Restaurant restaurant = thing.getRestaurant();
+            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
 
-        item.setRestaurant(restaurantRepo.findOne(id));
-        inventoryRepo.save(item);
+            if (rest_id == restaurant.getId()) {
+                inventoryRepo.save(thing);
+            }
+        }
     }
 
     @CrossOrigin
-    @GetMapping("/transactions/{restaurant_id}")
-    public List<Transaction> getAllTransactions(
-            @PathVariable("restaurant_id") int restaurant_id) {
-
-        List<Transaction> allTransactions = transactionRepo.findAllByRestaurantId(restaurant_id);
-
-        return allTransactions;
+    @GetMapping("/transactions")
+    public List<Transaction> getAllTransactions(HttpSession session) {
+        if (session.getAttribute("current_restaurant_user") != null) {
+            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+            List<Transaction> transactions = transactionRepo.findAllByRestaurantId(rest_id);
+            return transactions;
+        }
+        return null;
     }
 
 
@@ -606,56 +520,166 @@ public class LastMealGreatDealController {
     //********* CUSTOMER-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
     @CrossOrigin
-    @GetMapping("/restaurants/{restaurant_id}")
-    public Restaurant getRestaurantDetails(
-            @PathVariable("restaurant_id") int restaurant_id) {
-
-        Restaurant restaurant = restaurantRepo.findOne(restaurant_id);
-
-        return restaurant;
+    @PostMapping("/customer-signin")
+    public void customerSignIn(
+            //TODO: Possibly change this to parse JSON instead of form input, same with restaurant
+            @RequestParam String username,
+            @RequestParam String password,
+            HttpSession session) {
+        User user = userRepo
+                .findFirstByUsernameAndPassword(username, password);
+        System.out.println(username);
+        System.out.println(password);
+        if (user != null) {
+            session.setAttribute("current_customer_user", user.getId());
+            System.out.println("poo");
+        }
     }
 
-//TODO: how to return all restaurants within certain longitude and latitude limits? Discuss with Ben.
+    @CrossOrigin
+    @GetMapping("/restaurant/{restaurant_id}")
+    public Restaurant getRestaurantDetails(
+            @PathVariable("restaurant_id") int restaurant_id,
+            HttpSession session) {
+        //TODO: Sooooo this will return the restaurant's username and password as well. We need to figure out how to
+        //TODO: not do that... but not important for minimum viable product.
+        if (session.getAttribute("current_customer_user") != null) {
+
+            Restaurant restaurant = restaurantRepo.findOne(restaurant_id);
+            return restaurant;
+        }
+        return null;
+    }
+
+    //To search for all restaurants within certain distance of the user, use pythagorean theorem.
+    public double distanceBetweenCoords(double lat1, double lng1, double lat2, double lng2) {
+        double a = lat1 - lat2;
+        double b = lng1 - lng2;
+        double c = Math.sqrt(a*a + b*b);
+
+        return c;
+    }
+
+    @CrossOrigin
+    @GetMapping("/restaurants")
     // /restaurants?lat=<blah>&lng=<blah>
-//    @CrossOrigin
-//    @GetMapping("/restaurants")
-//    public List<Restaurant> getAllRestaurants(
-//            @RequestParam(value = "lat") String lat,
-//            @RequestParam(value = "lng") String lng) {
-//
-//        final double radius = .5;
-//
-//        List<Restaurant> allRestaurantsInArea = (List<Restaurant>)restaurantRepo.findAll();
-//
-//        return allRestaurantsInArea
-//                .stream()
-//                .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
-//                .collect(Collectors.toList());
-//    }
+    public List<Restaurant> getAllRestaurants(
+            @RequestParam(value = "lat") double lat,
+            @RequestParam(value = "lng") double lng,
+            HttpSession session) {
 
+        //TODO: verify math works
+        final double radius = .5;
 
-//TODO: I think we have to create a new database and separate controller for carts.
-//TODO: We will need to do research on this. Discuss with Ben.
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void addToCart() {
-//        //return all restaurants in area
-//    }
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void payForFood() {
-//        //return all restaurants in area
-//    }
+        if (session.getAttribute("current_customer_user") != null) {
+            List<Restaurant> allRestaurantsInArea = (List<Restaurant>) restaurantRepo.findAll();
 
-//TODO: For the confirmation page (the one that comes immediately after they make a
-//TODO: purchase) -- we need to think through whether we really need a separate
-//TODO: endpoint for this.  What we can do is, create an application response
-//TODO: (to the purchase endpoint) as a JSON object that they can display on their page.
-//    @CrossOrigin
-//    @GetMapping("/customer/restaurants/transactions")
-//    public void confirmation() {
-//        //return all restaurants in area
-//    }
+            return allRestaurantsInArea
+                    .stream()
+                    .filter(r -> distanceBetweenCoords(lat, lng, r.getLatitude(), r.getLongitude()) < radius)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    @CrossOrigin
+    @PostMapping("/cart")
+    public List<Inventory> addToCart(
+            @RequestParam(value = "inventoryId") int inventoryId,
+            @RequestParam(value = "quantity") int quantity,
+            HttpSession session) {
+
+        List<Inventory> cart = new ArrayList<Inventory>();
+        if (session.getAttribute("current_customer_user") != null) {
+
+            //if the session doesnt have a cart already, add a cart.
+            if (session.getAttribute("cart") == null) {
+                session.setAttribute("cart", cart);
+            }
+
+            //if we don't explicitly set cart to the session, inventory items will be saved to the list "cart" but
+            //not the session.
+            cart = (List<Inventory>) session.getAttribute("cart");
+
+            Inventory item = inventoryRepo.findOne(inventoryId);
+            if (quantity <= item.getNum_available() && quantity > 0) {
+                //we're using num_available to represent the quantity in the cart.
+                item.setNum_available(quantity);
+                cart.add(item);
+            } else if (quantity == 0) {
+                cart.remove(item);
+            } else {
+                    //if I want 8 hotdogs and I only have 6, it will give me 6 -- the max amount available.
+                    cart.add(item);
+                }
+            }
+
+        //this is to update our cart in session. if you look above, we never set cart to session IF the
+        //cart already exists.
+        session.setAttribute("cart", cart);
+        return cart;
+    }
+
+    //TODO: Tested on Postman and it hangs... Not sure why not returning either empty or full cart. Ask Ben.
+    @CrossOrigin
+    @GetMapping("/cart")
+    public List<Inventory> getAllStuffInCart(HttpSession session) {
+        List<Inventory> cart = new ArrayList<Inventory>();
+        if (session.getAttribute("current_customer_user") != null) {
+             cart = (List<Inventory>) session.getAttribute("cart");
+        }
+        return cart;
+    }
+
+    @CrossOrigin
+    @PostMapping("/pay")
+    public Transaction payForFood(
+            //Front end shouldn't have to pass anything for this to work? As long as total bill is more than $0.
+            Transaction transaction,
+            HttpSession session) {
+        if (session.getAttribute("current_customer_user") != null) {
+            System.out.println("Hi im here");
+
+            //Assign the session's cart to a variable that we can process
+            List<Inventory> cart = (List<Inventory>) session.getAttribute("cart");
+            double totalBill = 0;
+
+            //For all items in the session cart, add price* quantity to the total bill
+            for (Inventory cartItems : cart) {
+                System.out.println("I've got money. Honey. ");
+                totalBill += (cartItems.getPrice()*cartItems.getNum_available());
+            }
+
+            if (transaction.processCard(totalBill)) {
+                System.out.println("CC ind a house");
+                for (Inventory stuffInCart : cart) {
+                    System.out.println("hi");
+                    Inventory tempObject = inventoryRepo.findOne(stuffInCart.getId());
+
+                    //set the num_available for object in database to ... whats left
+                    tempObject.setNum_available(tempObject.getNum_available()-stuffInCart.getNum_available());
+                    inventoryRepo.save(tempObject);
+                }
+
+                //set transaction details to session owner (user) and to restaurant
+                transaction.setUser(userRepo.findOne((Integer) session.getAttribute("current_customer_user")));
+
+                int tempId = cart.get(0).getId();
+                Inventory tempInventory = inventoryRepo.findOne(tempId);
+                Restaurant restaurant = tempInventory.getRestaurant();
+                transaction.setRestaurant(restaurant);
+                transaction.setTotal(totalBill);
+
+                //TODO: This is having trouble serializing the java object into JSON and I'm too sleepy to
+                //TODO: figure out why. Ask Ben
+                transactionRepo.save(transaction);
+                session.removeAttribute("cart");
+
+                return transaction;
+            }
+        }
+        return null;
+    }
 
 
 //TODO: EXTRAS with SORT and SEARCH

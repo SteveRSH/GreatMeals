@@ -22,9 +22,7 @@ public class Open {
         this.start = start;
     }
 
-    public String getEnd() {
-        return end;
-    }
+    public String getEnd() { return end; }
 
     public void setEnd(String end) {
         this.end = end;
