@@ -61,7 +61,6 @@ public class YelpService {
             r.setName(business.getName());
             r.setPrice(business.getPrice());
             r.setRating((int)business.getRating());
-//            r.setCreated_at(Date.from(Instant.now()));
 
 
             return r;
