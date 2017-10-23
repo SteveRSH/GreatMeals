@@ -1,6 +1,7 @@
 package com.theironyard.charlotte.GreatMeals.models.database;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -31,10 +32,12 @@ import java.util.Set;
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="rest_id")
     private int id;
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Inventory> inventory;
 
     @Column(nullable = false)

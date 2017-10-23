@@ -1,6 +1,8 @@
 package com.theironyard.charlotte.GreatMeals.models.database;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jdk.nashorn.internal.ir.annotations.Reference;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -34,6 +36,12 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "rest_id", nullable = false)
+    @JsonBackReference
+    private Restaurant restaurant;
+
     @Column(nullable = false)
     private String description;
 
@@ -61,6 +69,14 @@ public class Inventory {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public String getDescription() {
