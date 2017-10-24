@@ -8,6 +8,7 @@ import com.theironyard.charlotte.GreatMeals.repository.InventoryRepository;
 import com.theironyard.charlotte.GreatMeals.repository.RestaurantRepository;
 import com.theironyard.charlotte.GreatMeals.repository.TransactionRepository;
 import com.theironyard.charlotte.GreatMeals.repository.UserRepository;
+import com.theironyard.charlotte.GreatMeals.services.YelpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -398,6 +399,11 @@ public class LastMealGreatDealController {
     }
 
     //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//
+    @CrossOrigin
+    @GetMapping("/newbusiness/{yelpId}")
+    public Restaurant getBusiness(@PathVariable String yelpId) {
+        return YelpService.getSingleBusinessAsRestaurant(yelpId);
+    }
 
     @CrossOrigin
     @PostMapping("/restaurant-signin")
