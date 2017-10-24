@@ -108,12 +108,13 @@ public class LastMealGreatDealController {
             Inventory inventory13 = new Inventory();
             Inventory inventory14 = new Inventory();
 
-            List<Inventory> list = Arrays.asList(inventory10);
-            list.add(inventory11);
-            list.add(inventory12);
-            list.add(inventory13);
-            list.add(inventory14);
-            System.out.println(list);
+            List<Inventory> list1 = new ArrayList<>();
+            list1.add(inventory10);
+            list1.add(inventory11);
+            list1.add(inventory12);
+            list1.add(inventory13);
+            list1.add(inventory14);
+            System.out.println(list1);
 
             //Setting all the values...
             inventory10.setDescription("Almond batter nuggets");
@@ -157,7 +158,7 @@ public class LastMealGreatDealController {
             restaurant1.setName("Cellar at Duckworth's");
             restaurant1.setPrice("$$");
             restaurant1.setRating(4.5);
-            restaurant1.setInventory(list);
+            restaurant1.setInventory(list1);
 
             //Note on weird ordering: had to do it this way to get them all saved to the database.
             inventory10.setRestaurant(restaurant1);
@@ -165,11 +166,17 @@ public class LastMealGreatDealController {
             inventory13.setRestaurant(restaurant1);
             inventory14.setRestaurant(restaurant1);
             inventory12.setRestaurant(restaurant1);
+            inventoryRepo.save(inventory10);
+            inventoryRepo.save(inventory11);
+            inventoryRepo.save(inventory12);
+            inventoryRepo.save(inventory13);
+            inventoryRepo.save(inventory14);
             restaurantRepo.save(restaurant1);
 
             //I create a new list for every inventory instance. Then I change the value of list so that it points to
             //different objects in memory.
-            list = Arrays.asList(inventory9);
+            List<Inventory> list2 = new ArrayList<>();
+            list2.add(inventory9);
 
             inventory9.setDescription("Grilled cheese sandwich");
             inventory9.setNum_available(10);
@@ -188,11 +195,13 @@ public class LastMealGreatDealController {
             restaurant2.setName("Seoul Food Meat Company");
             restaurant2.setPrice("$$");
             restaurant2.setRating(4.0);
-            restaurant2.setInventory(list);
+            restaurant2.setInventory(list2);
 
             inventory9.setRestaurant(restaurant2);
+            inventoryRepo.save(inventory9);
             restaurantRepo.save(restaurant2);
-            list = Arrays.asList(inventory8);
+            List<Inventory> list3 = new ArrayList<>();
+            list3.add(inventory8);
 
             inventory8.setDescription("Asian salad");
             inventory8.setNum_available(10);
@@ -211,11 +220,15 @@ public class LastMealGreatDealController {
             restaurant3.setName("Rooster's Uptown");
             restaurant3.setPrice("$$");
             restaurant3.setRating(4.0);
-            restaurant3.setInventory(list);
+            restaurant3.setInventory(list3);
 
             inventory8.setRestaurant(restaurant3);
+            inventoryRepo.save(inventory8);
             restaurantRepo.save(restaurant3);
-            list = Arrays.asList(inventory7);
+
+
+            List<Inventory> list4 = new ArrayList<>();
+            list4.add(inventory7);
 
             inventory7.setDescription("Taco burger");
             inventory7.setNum_available(10);
@@ -234,11 +247,13 @@ public class LastMealGreatDealController {
             restaurant4.setName("The King's Kitchen");
             restaurant4.setPrice("$$");
             restaurant4.setRating(4.0);
-            restaurant4.setInventory(list);
+            restaurant4.setInventory(list4);
 
             inventory7.setRestaurant(restaurant4);
+            inventoryRepo.save(inventory7);
             restaurantRepo.save(restaurant4);
-            list = Arrays.asList(inventory6);
+            List<Inventory> list5 = new ArrayList<>();
+            list5.add(inventory6);
 
             inventory6.setDescription("grilled beef and broccoli");
             inventory6.setNum_available(10);
@@ -257,11 +272,13 @@ public class LastMealGreatDealController {
             restaurant5.setName("Dandelion Market");
             restaurant5.setPrice("$$");
             restaurant5.setRating(4.0);
-            restaurant5.setInventory(list);
+            restaurant5.setInventory(list5);
 
             inventory6.setRestaurant(restaurant5);
+            inventoryRepo.save(inventory6);
             restaurantRepo.save(restaurant5);
-            list = Arrays.asList(inventory5);
+            List<Inventory> list6 = new ArrayList<>();
+            list6.add(inventory5);
 
             inventory5.setDescription("sesame chicken");
             inventory5.setNum_available(10);
@@ -280,11 +297,13 @@ public class LastMealGreatDealController {
             restaurant6.setName("Murphy's Kitchen & Tap");
             restaurant6.setPrice("$$");
             restaurant6.setRating(4.5);
-            restaurant6.setInventory(list);
+            restaurant6.setInventory(list6);
 
             inventory5.setRestaurant(restaurant6);
+            inventoryRepo.save(inventory5);
             restaurantRepo.save(restaurant6);
-            list = Arrays.asList(inventory4);
+            List<Inventory> list7 = new ArrayList<>();
+            list7.add(inventory4);
 
             inventory4.setDescription("steak and eggs");
             inventory4.setNum_available(10);
@@ -303,11 +322,13 @@ public class LastMealGreatDealController {
             restaurant7.setName("Stoke");
             restaurant7.setPrice("$$");
             restaurant7.setRating(4.0);
-            restaurant7.setInventory(list);
+            restaurant7.setInventory(list7);
 
             inventory4.setRestaurant(restaurant7);
+            inventoryRepo.save(inventory4);
             restaurantRepo.save(restaurant7);
-            list = Arrays.asList(inventory3);
+            List<Inventory> list8 = new ArrayList<>();
+            list8.add(inventory3);
 
             inventory3.setDescription("Fish and chips");
             inventory3.setNum_available(10);
@@ -327,11 +348,13 @@ public class LastMealGreatDealController {
             restaurant8.setName("Mimosa Grill");
             restaurant8.setPrice("$$");
             restaurant8.setRating(4.0);
-            restaurant8.setInventory(list);
+            restaurant8.setInventory(list8);
 
             inventory3.setRestaurant(restaurant8);
+            inventoryRepo.save(inventory3);
             restaurantRepo.save(restaurant8);
-            list = Arrays.asList(inventory2);
+            List<Inventory> list9 = new ArrayList<>();
+            list9.add(inventory2);
 
             inventory2.setDescription("taco salad");
             inventory2.setNum_available(10);
@@ -350,11 +373,13 @@ public class LastMealGreatDealController {
             restaurant9.setName("Viva Chicken");
             restaurant9.setPrice("$");
             restaurant9.setRating(4.5);
-            restaurant9.setInventory(list);
+            restaurant9.setInventory(list9);
 
             inventory2.setRestaurant(restaurant9);
+            inventoryRepo.save(inventory2);
             restaurantRepo.save(restaurant9);
-            list = Arrays.asList(inventory1);
+            List<Inventory> list10 = new ArrayList<>();
+            list10.add(inventory1);
 
             inventory1.setDescription("kale burger");
             inventory1.setNum_available(10);
@@ -373,9 +398,10 @@ public class LastMealGreatDealController {
             restaurant10.setName("Alexander Michael's");
             restaurant10.setPrice("$$");
             restaurant10.setRating(4.5);
-            restaurant10.setInventory(list);
+            restaurant10.setInventory(list10);
 
             inventory1.setRestaurant(restaurant10);
+            inventoryRepo.save(inventory1);
             restaurantRepo.save(restaurant10);
 
             transaction1.setRestaurant(restaurant1);
@@ -407,7 +433,7 @@ public class LastMealGreatDealController {
 
     @CrossOrigin
     @PostMapping("/restaurant-signin")
-    public void restaurantSignIn(
+    public Restaurant restaurantSignIn(
             @RequestBody Restaurant restaurant, HttpSession session, HttpServletResponse response) throws IOException {
         Restaurant user = restaurantRepo
                 .findFirstByUsernameAndPassword(restaurant.getUsername(), restaurant.getPassword());
@@ -415,11 +441,18 @@ public class LastMealGreatDealController {
         if (user != null) {
             // if the user's not null, set their session
             session.setAttribute("current_restaurant_user", user.getId());
+
+            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+
+            Restaurant returnRestaurant = restaurantRepo.findOne(rest_id);
+            return returnRestaurant;
         } else {
             // the user was not found, which means nobody had this username/password combo
             // send a "403", or "access denied" error.
             response.sendError(403);
         }
+
+        return null;
     }
 
     @CrossOrigin
