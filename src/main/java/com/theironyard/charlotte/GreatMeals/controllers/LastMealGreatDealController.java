@@ -499,7 +499,7 @@ public class LastMealGreatDealController {
 
     @CrossOrigin
     @PostMapping("/inventory")
-    public void addInventory(
+    public Restaurant addInventory(
             HttpSession session,
             @RequestBody Inventory item) {
         if (session.getAttribute("current_restaurant_user") != null) {
@@ -515,14 +515,17 @@ public class LastMealGreatDealController {
             inventory.add(item);
             restaurant.setInventory(inventory);
             restaurantRepo.save(restaurant);
+            return restaurant;
         }
+
+        return null;
     }
 
 
 
     @CrossOrigin
     @DeleteMapping("/inventory/{inventoryId}")
-    public void deleteFromInventory(
+    public Restaurant deleteFromInventory(
             @PathVariable ("inventoryId") int inventoryId,
             HttpSession session) {
 
@@ -537,14 +540,18 @@ public class LastMealGreatDealController {
             if (rest_id == restaurant.getId()) {
                 thing.setNum_available(0);
                 inventoryRepo.save(thing);
+                return restaurant;
             }
 
         }
+        return null;
     }
+
+    //changed void to Restaurant in order to get a response of updated data
 
     @CrossOrigin
     @PostMapping("/inventory/{inventoryId}")
-    public void editInventoryItem(
+    public Restaurant editInventoryItem(
             @PathVariable("inventoryId") int inventoryId,
             HttpSession session) {
         if (session.getAttribute("current_restaurant_user") != null) {
@@ -554,8 +561,11 @@ public class LastMealGreatDealController {
 
             if (rest_id == restaurant.getId()) {
                 inventoryRepo.save(thing);
+                return restaurant;
             }
         }
+
+        return null;
     }
 
     @CrossOrigin
@@ -782,7 +792,7 @@ public class LastMealGreatDealController {
 //        //return all restaurants in area
 //    }
 /////////////////////////////////////////////////////////////////////////////
-    
+
     @CrossOrigin
     @GetMapping("/restaurants/search")
     public Response searchRestaurantsByName(@RequestParam String q) {
