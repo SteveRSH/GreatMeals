@@ -2,6 +2,8 @@ package com.theironyard.charlotte.GreatMeals.models.yelp;
 
 import java.util.ArrayList;
 
+///endpoints added to return businesses based on the provided search criteria
+
 public class Location {
     public String address1;
     public String address2;

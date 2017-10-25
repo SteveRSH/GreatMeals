@@ -1,5 +1,7 @@
 package com.theironyard.charlotte.GreatMeals.models.yelp;
 
+//added to return businesses based on the latitude and longitude
+
 public class Coordinates {
     public double latitude;
     public double longitude;

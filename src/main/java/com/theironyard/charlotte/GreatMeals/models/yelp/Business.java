@@ -2,6 +2,8 @@ package com.theironyard.charlotte.GreatMeals.models.yelp;
 
 import java.util.ArrayList;
 
+//Yelp API - allows the user to access various info (e.g. restaurant name, ratings, location)
+
 public class Business {
     public String id;
     public String name;
