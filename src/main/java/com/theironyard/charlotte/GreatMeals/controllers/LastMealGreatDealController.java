@@ -782,16 +782,12 @@ public class LastMealGreatDealController {
 //        //return all restaurants in area
 //    }
 /////////////////////////////////////////////////////////////////////////////
+    
     @CrossOrigin
     @GetMapping("/restaurants/search")
     public Response searchRestaurantsByName(@RequestParam String q) {
         //return all restaurants in area
         return YelpService.getSearchResults(q);
     }
-//    @CrossOrigin
-//   @GetMapping(path = "/search/{query}") //temp path to just make it work
-//    public Response searchTest(@PathVariable(value = "query") String query) {
-//        return YelpService.getSearchResults(query);}
-//
-    //*************************************************//
+
 }
