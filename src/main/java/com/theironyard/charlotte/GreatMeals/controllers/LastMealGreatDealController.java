@@ -4,6 +4,7 @@ import com.theironyard.charlotte.GreatMeals.models.database.Inventory;
 import com.theironyard.charlotte.GreatMeals.models.database.Restaurant;
 import com.theironyard.charlotte.GreatMeals.models.database.Transaction;
 import com.theironyard.charlotte.GreatMeals.models.database.User;
+import com.theironyard.charlotte.GreatMeals.models.yelp.Response;
 import com.theironyard.charlotte.GreatMeals.repository.InventoryRepository;
 import com.theironyard.charlotte.GreatMeals.repository.RestaurantRepository;
 import com.theironyard.charlotte.GreatMeals.repository.TransactionRepository;
@@ -425,10 +426,13 @@ public class LastMealGreatDealController {
     }
 
     //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//
+
+    /////////////////////////////////////////////////////////////////////////
     @CrossOrigin
-    @GetMapping("/newbusiness/{yelpId}")
-    public Restaurant getBusiness(@PathVariable String yelpId) {
-        return YelpService.getSingleBusinessAsRestaurant(yelpId);
+    @GetMapping("/newbusiness/{YelpId}")
+    public Restaurant getBusiness(@PathVariable String YelpId) {
+        return YelpService.getSingleBusinessAsRestaurant(YelpId); //changed YelpID to name - didn't work
+
     }
 
     @CrossOrigin
@@ -777,12 +781,17 @@ public class LastMealGreatDealController {
 //    public void sortRestaurants() {
 //        //return all restaurants in area
 //    }
-//
+/////////////////////////////////////////////////////////////////////////////
+    @CrossOrigin
+    @GetMapping("/restaurants/search")
+    public Response searchRestaurantsByName(@RequestParam String q) {
+        //return all restaurants in area
+        return YelpService.getSearchResults(q);
+    }
 //    @CrossOrigin
-//    @GetMapping("/customer/restaurants/search?q=query")
-//    public void searchRestaurantsByName() {
-//        //return all restaurants in area
-//    }
+//   @GetMapping(path = "/search/{query}") //temp path to just make it work
+//    public Response searchTest(@PathVariable(value = "query") String query) {
+//        return YelpService.getSearchResults(query);}
 //
     //*************************************************//
 }
