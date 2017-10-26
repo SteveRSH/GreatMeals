@@ -553,6 +553,7 @@ public class LastMealGreatDealController {
     @PostMapping("/inventory/{inventoryId}")
     public Restaurant editInventoryItem(
             @PathVariable("inventoryId") int inventoryId,
+            @RequestBody Inventory inventory,
             HttpSession session, HttpServletResponse response) throws IOException {
         if (session.getAttribute("current_restaurant_user") != null) {
             Inventory thing = inventoryRepo.findOne(inventoryId);
@@ -562,6 +563,12 @@ public class LastMealGreatDealController {
                 int rest_id = (int)session.getAttribute("current_restaurant_user");
 
                 if (rest_id == restaurant.getId()) {
+                    thing.setNum_available(inventory.getNum_available());
+                    thing.setDescription(inventory.getDescription());
+                    thing.setPickup_start(inventory.getPickup_start());
+                    thing.setPickup_end(inventory.getPickup_end());
+                    thing.setPrice(inventory.getPrice());
+
                     inventoryRepo.save(thing);
                     return restaurant;
                 }
