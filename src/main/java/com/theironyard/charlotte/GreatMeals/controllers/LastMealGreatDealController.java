@@ -559,7 +559,7 @@ public class LastMealGreatDealController {
 
             if (thing != null) {
                 Restaurant restaurant = thing.getRestaurant();
-                int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+                int rest_id = (int)session.getAttribute("current_restaurant_user");
 
                 if (rest_id == restaurant.getId()) {
                     inventoryRepo.save(thing);
