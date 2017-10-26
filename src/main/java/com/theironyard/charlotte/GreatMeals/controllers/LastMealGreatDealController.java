@@ -566,10 +566,13 @@ public class LastMealGreatDealController {
                 if (rest_id == restaurant.getId()) {
                     thing.setNum_available(inventory.getNum_available());
                     thing.setDescription(inventory.getDescription());
-                    thing.setPickup_start(inventory.getPickup_start());
-                    thing.setPickup_end(inventory.getPickup_end());
                     thing.setPrice(inventory.getPrice());
 
+                    for (Inventory item : inventoryRepo.findAll()) {
+                        item.setPickup_start(inventory.getPickup_start());
+                        item.setPickup_end(inventory.getPickup_end());
+                    }
+                    
                     inventoryRepo.save(thing);
                     restaurant = restaurantRepo.findOne(rest_id);
                     return restaurant;
@@ -790,8 +793,6 @@ public class LastMealGreatDealController {
                 transaction.setRestaurant(restaurant);
                 transaction.setTotal(totalBill);
 
-                //TODO: This is having trouble serializing the java object into JSON and I'm too sleepy to
-                //TODO: figure out why. Ask Ben
                 transactionRepo.save(transaction);
                 session.removeAttribute("cart");
 
