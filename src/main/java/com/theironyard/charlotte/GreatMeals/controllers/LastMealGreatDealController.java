@@ -553,16 +553,24 @@ public class LastMealGreatDealController {
     @PostMapping("/inventory/{inventoryId}")
     public Restaurant editInventoryItem(
             @PathVariable("inventoryId") int inventoryId,
-            HttpSession session) {
+            HttpSession session, HttpServletResponse response) throws IOException {
         if (session.getAttribute("current_restaurant_user") != null) {
             Inventory thing = inventoryRepo.findOne(inventoryId);
-            Restaurant restaurant = thing.getRestaurant();
-            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
 
-            if (rest_id == restaurant.getId()) {
-                inventoryRepo.save(thing);
-                return restaurant;
+            if (thing != null) {
+                Restaurant restaurant = thing.getRestaurant();
+                int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+
+                if (rest_id == restaurant.getId()) {
+                    inventoryRepo.save(thing);
+                    return restaurant;
+                }
+            } else {
+                response.sendError(404, "Inventory item not found.");
+                return null;
             }
+        } else {
+            response.sendError(401, "You must be logged in to do this");
         }
 
         return null;
