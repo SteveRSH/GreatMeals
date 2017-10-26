@@ -535,11 +535,12 @@ public class LastMealGreatDealController {
         if (session.getAttribute("current_restaurant_user") != null) {
             Inventory thing = inventoryRepo.findOne(inventoryId);
             Restaurant restaurant = thing.getRestaurant();
-            int rest_id = (Integer) session.getAttribute("current_restaurant_user");
+            int rest_id = (int)session.getAttribute("current_restaurant_user");
 
             if (rest_id == restaurant.getId()) {
                 thing.setNum_available(0);
                 inventoryRepo.save(thing);
+                restaurant = restaurantRepo.findOne(rest_id);
                 return restaurant;
             }
 
@@ -570,6 +571,7 @@ public class LastMealGreatDealController {
                     thing.setPrice(inventory.getPrice());
 
                     inventoryRepo.save(thing);
+                    restaurant = restaurantRepo.findOne(rest_id);
                     return restaurant;
                 }
             } else {
