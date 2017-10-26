@@ -427,7 +427,7 @@ public class LastMealGreatDealController {
 
     //********* RESTAURANT-SIDE SPECIFIC CONTROLLERS START HERE *******//
 
-    /////////////////////////////////////////////////////////////////////////
+    //User can search businesses by using YelpId
     @CrossOrigin
     @GetMapping("/newbusiness/{YelpId}")
     public Restaurant getBusiness(@PathVariable String YelpId) {
@@ -791,8 +791,8 @@ public class LastMealGreatDealController {
 //    public void sortRestaurants() {
 //        //return all restaurants in area
 //    }
-/////////////////////////////////////////////////////////////////////////////
-
+//
+//added get mapping in order for user search by restaurants name instead of yelpID
     @CrossOrigin
     @GetMapping("/restaurants/search")
     public Response searchRestaurantsByName(@RequestParam String q) {

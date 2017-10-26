@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Instant;
 import java.util.List;
 
-//
+//This endpoint returns the detail information of a business
 public class YelpService {
     private static final String AUTHTOKEN = "Bearer ze16p9aetTdlbCkdM4p2cOb2i9B-Dgt8JJkxkzs7Nyt4FKSrN8l5Jmkz_TJP28iW3XG-jm8z1z2peHpLYWjSC6kcd5Nw3ceB3QdAg1n7z_dIZHf6JulyHM-GfU3eWXYx";
 
@@ -31,7 +31,7 @@ public class YelpService {
     }
 
 
-        // make a rest template request (see above)
+        // made a rest template request
         // to get the details for an individual business.
         // once you get the business, convert it to a restaurant and return
         // the restaurant
@@ -75,5 +75,3 @@ public class YelpService {
 
 
 
-//if the user wants to enter their own long and lat
-//String url = "https://api.yelp.com/v3/businesses/search?term=" + query + "&location=" + "&radius=40000";
