@@ -562,7 +562,7 @@ public class LastMealGreatDealController {
                 int rest_id = (Integer) session.getAttribute("current_restaurant_user");
 
                 if (rest_id == restaurant.getId()) {
-                    
+
                     //ONLY CHECKING TO SEE IF THIS LINE WORKS; IF NOT REMOVE
                     // thing.setNum_available(0);
                     // SAME ERROR OCCUR
