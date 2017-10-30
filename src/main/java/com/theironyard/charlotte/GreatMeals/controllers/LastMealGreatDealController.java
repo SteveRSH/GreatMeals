@@ -480,18 +480,21 @@ public class LastMealGreatDealController {
             //Find the specific restaurant, create a list of that restaurant's inventory
             Restaurant restaurant = restaurantRepo.findOne(rest_id);
             List<Inventory> listOfThings = restaurant.getInventory();
-
-            //This is just another way to iterate through a list of things
-            //Basically, while there is still items on the list,
-            //if the num_available is == 0, then remove it from the list. Return the list.
-            Iterator<Inventory> i = listOfThings.iterator();
-            while (i.hasNext()) {
-                Inventory thing = i.next(); // must be called before you can call i.remove()
-                if (thing.getNum_available() == 0) {
-                    i.remove();
-                }
-            }
-            return listOfThings;
+            return listOfThings.stream()
+                    .filter(i -> i.getNum_available() > 0)
+                    .collect(Collectors.toList());
+//
+//            //This is just another way to iterate through a list of things
+//            //Basically, while there is still items on the list,
+//            //if the num_available is == 0, then remove it from the list. Return the list.
+//            Iterator<Inventory> i = listOfThings.iterator();
+//            while (i.hasNext()) {
+//                Inventory thing = i.next(); // must be called before you can call i.remove()
+//                if (thing.getNum_available() == 0) {
+//                    i.remove();
+//                }
+//            }
+//            return listOfThings;
         }
         return null;
     }
@@ -564,7 +567,6 @@ public class LastMealGreatDealController {
                 int rest_id = (int)session.getAttribute("current_restaurant_user");
 
                 if (rest_id == restaurant.getId()) {
-
                     thing.setNum_available(inventory.getNum_available());
                     thing.setDescription(inventory.getDescription());
                     thing.setPickup_start(inventory.getPickup_start());
