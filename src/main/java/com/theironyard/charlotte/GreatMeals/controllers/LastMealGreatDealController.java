@@ -572,7 +572,7 @@ public class LastMealGreatDealController {
                         item.setPickup_start(inventory.getPickup_start());
                         item.setPickup_end(inventory.getPickup_end());
                     }
-                    
+
                     inventoryRepo.save(thing);
                     restaurant = restaurantRepo.findOne(rest_id);
                     return restaurant;
